@@ -10,6 +10,7 @@ import { LoginPage, RegisterPage } from '../pages/AuthPages.tsx';
 import { CalendarPage } from '../pages/CalendarPage.tsx';
 import { CardPage } from '../pages/CardPage.tsx';
 import { MapPage } from '../pages/MapPage.tsx';
+import { NewPage } from '../pages/NewPage.tsx';
 import { NotesPage } from '../pages/NotesPage.tsx';
 import { NotFoundPage } from '../pages/NotFoundPage.tsx';
 import { ProfilePage } from '../pages/ProfilePage.tsx';
@@ -49,6 +50,7 @@ export function App() {
               <Route path="/cards/:slug" element={<CardPage />} />
               <Route path="/calendar" element={<CalendarPage />} />
               <Route path="/search" element={<SearchPage />} />
+              <Route path="/new" element={<NewPage />} />
               <Route path="/notes" element={<NotesPage />} />
               <Route path="/profile" element={<ProfilePage />} />
             </Route>

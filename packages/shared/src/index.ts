@@ -6,3 +6,4 @@ export * from './year.js';
 export * from './notes.js';
 export * from './search.js';
 export * from './calendar.js';
+export * from './discover.js';

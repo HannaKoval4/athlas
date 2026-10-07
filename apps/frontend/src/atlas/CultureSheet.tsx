@@ -8,7 +8,7 @@ import {
 import { XIcon } from 'lucide-react';
 import { useId } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useNavigate, useParams, useSearchParams } from 'react-router';
+import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router';
 import { isApiError } from '../api/client.ts';
 import { Badge } from '../components/ui/badge.tsx';
 import { Button } from '../components/ui/button.tsx';
@@ -21,6 +21,7 @@ import {
 } from '../components/ui/sheet.tsx';
 import { Switch } from '../components/ui/switch.tsx';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs.tsx';
+import { RandomTopicNote } from '../discover/RandomTopicNote.tsx';
 import { NotesPanel } from '../notes/NotesPanel.tsx';
 import { useCardList, useCulture } from './content-api.ts';
 import { CultureGallery } from './CultureGallery.tsx';
@@ -42,6 +43,7 @@ export function CultureSheet() {
   const { slug = '' } = useParams();
   const navigate = useNavigate();
   const [params, setParams] = useSearchParams();
+  const location = useLocation();
 
   const showAll = params.get('all') === '1';
   const view: PanelView = params.get('view') === 'graph' ? 'graph' : 'list';
@@ -65,7 +67,8 @@ export function CultureSheet() {
       if (value === null) next.delete(key);
       else next.set(key, value);
     }
-    setParams(next, { replace: true });
+    // Keep the navigation state (e.g. the random topic reason) while switching tabs and views.
+    setParams(next, { replace: true, state: location.state as unknown });
   }
 
   const data = culture.data;
@@ -125,6 +128,7 @@ export function CultureSheet() {
             </SheetHeader>
 
             <div className="flex flex-col gap-4 px-4 pb-6">
+              <RandomTopicNote cultureSlug={data.slug} />
               <p className="leading-relaxed">{data.description}</p>
 
               <CultureGallery cultureId={data.id} year={data.year} />

@@ -6,9 +6,12 @@ import { CalendarModule } from './modules/calendar/calendar.module';
 import { CardsModule } from './modules/cards/cards.module';
 import { CulturesModule } from './modules/cultures/cultures.module';
 import { ErasModule } from './modules/eras/eras.module';
+import { FeedModule } from './modules/feed/feed.module';
 import { HealthModule } from './modules/health/health.module';
+import { HistoryModule } from './modules/history/history.module';
 import { MapModule } from './modules/map/map.module';
 import { NotesModule } from './modules/notes/notes.module';
+import { RandomTopicModule } from './modules/random/random-topic.module';
 import { SearchModule } from './modules/search/search.module';
 import { UsersModule } from './modules/users/users.module';
 import { PrismaModule } from './prisma/prisma.module';
@@ -32,6 +35,9 @@ import { PrismaModule } from './prisma/prisma.module';
     NotesModule,
     SearchModule,
     CalendarModule,
+    RandomTopicModule,
+    FeedModule,
+    HistoryModule,
   ],
 })
 export class AppModule {}

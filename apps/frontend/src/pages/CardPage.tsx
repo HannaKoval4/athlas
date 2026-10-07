@@ -1,5 +1,6 @@
 import { type CardDetails, type CardSourceRef, formatPeriod } from '@atlas/shared';
 import { ArrowLeft, ExternalLink, MapPin } from 'lucide-react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Markdown from 'react-markdown';
 import { Link, useLocation, useNavigate, useParams } from 'react-router';
@@ -9,6 +10,7 @@ import { CreditText } from '../atlas/CreditText.tsx';
 import { PageContainer } from '../components/AppLayout.tsx';
 import { Badge } from '../components/ui/badge.tsx';
 import { Button } from '../components/ui/button.tsx';
+import { useRecordView } from '../discover/api.ts';
 import { NotesPanel } from '../notes/NotesPanel.tsx';
 
 /**
@@ -19,6 +21,14 @@ export function CardPage() {
   const { t } = useTranslation();
   const { slug = '' } = useParams();
   const card = useCard(slug);
+  const recordView = useRecordView();
+
+  // BR-20: every opened card goes to the view history (once per card shown).
+  const cardId = card.data?.id;
+  const { mutate: record } = recordView;
+  useEffect(() => {
+    if (cardId) record({ cardId });
+  }, [cardId, record]);
 
   return (
     <PageContainer>

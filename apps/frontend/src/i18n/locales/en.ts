@@ -11,6 +11,7 @@ export const en: DeepStringify<typeof ru> = {
   },
   nav: {
     calendar: 'Calendar',
+    new: 'New',
     search: 'Search',
     notes: 'Notes',
     main: 'Main navigation',
@@ -237,6 +238,33 @@ export const en: DeepStringify<typeof ru> = {
     next: 'Next',
     page: 'Page {{page}} of {{pages}}',
     updating: 'Updating the results…',
+  },
+  random: {
+    button: 'Random topic',
+    error: 'Could not pick a topic.',
+    chosen: 'Random topic: {{era}} · {{culture}}.',
+    reason_one: '{{count}} material here;',
+    reason_few: '{{count}} materials here;',
+    reason_many: '{{count}} materials here;',
+    reason_other: '{{count}} materials here;',
+    quiz: {
+      NONE: 'there is no quiz on this topic yet.',
+      NOT_PASSED: 'the quiz is not passed yet.',
+      PASSED: 'the quiz is already passed.',
+    },
+    allPassed: 'all quizzes are passed, so the topic was chosen among all of them.',
+  },
+  feed: {
+    title: 'New in the atlas',
+    intro: 'Materials recently added to the atlas.',
+    published: 'Published {{date}}',
+    empty: 'Nothing has been published yet.',
+    loadError: 'Could not load the new materials.',
+  },
+  history: {
+    title: 'View history',
+    empty: 'You have not opened any cards yet.',
+    loadError: 'Could not load the view history.',
   },
   calendar: {
     title: 'Holiday calendar',

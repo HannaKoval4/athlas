@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, NavLink, Outlet } from 'react-router';
 import { useCurrentUser, useLogout } from '../auth/api.ts';
+import { RandomTopicButton } from '../discover/RandomTopicButton.tsx';
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   `rounded px-2 py-1 hover:bg-stone-200 ${isActive ? 'font-semibold text-amber-900' : ''}`;
@@ -34,6 +35,9 @@ export function AppLayout() {
             <NavLink to="/search" className={navLinkClass}>
               {t('nav.search')}
             </NavLink>
+            <NavLink to="/new" className={navLinkClass}>
+              {t('nav.new')}
+            </NavLink>
             <NavLink to="/notes" className={navLinkClass}>
               {t('nav.notes')}
             </NavLink>
@@ -41,6 +45,7 @@ export function AppLayout() {
               {t('nav.profile')}
             </NavLink>
           </nav>
+          <RandomTopicButton />
           <div className="ml-auto flex items-center gap-3">
             <span data-testid="current-user-name">{user?.name}</span>
             <button
