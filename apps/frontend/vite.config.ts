@@ -6,6 +6,9 @@ import { defineConfig } from 'vite';
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  resolve: {
+    alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
+  },
   // The single .env file lives in the repo root (only VITE_* variables reach the client).
   envDir: fileURLToPath(new URL('../..', import.meta.url)),
   server: {

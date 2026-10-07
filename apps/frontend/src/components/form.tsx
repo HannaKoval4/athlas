@@ -46,6 +46,41 @@ export function Field({ label, error, hint, children }: FieldProps) {
   );
 }
 
+interface CheckboxFieldProps extends Omit<ComponentProps<'input'>, 'type'> {
+  label: ReactNode;
+  /** Validation message key from the zod schema. */
+  error?: string;
+}
+
+/** Checkbox with the label on its right and an error below, e.g. the consent on sign-up. */
+export function CheckboxField({ label, error, ...input }: CheckboxFieldProps) {
+  const { t } = useTranslation();
+  const id = useId();
+  const errorId = `${id}-error`;
+  return (
+    <div className="flex flex-col gap-1">
+      <div className="flex items-start gap-2">
+        <input
+          {...input}
+          id={id}
+          type="checkbox"
+          aria-invalid={Boolean(error)}
+          aria-describedby={error ? errorId : undefined}
+          className="mt-1 size-4 shrink-0 accent-amber-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700"
+        />
+        <label htmlFor={id} className="text-sm text-stone-800">
+          {label}
+        </label>
+      </div>
+      {error && (
+        <p id={errorId} className="text-sm text-red-700">
+          {t(`validation.${error as ValidationKey}`)}
+        </p>
+      )}
+    </div>
+  );
+}
+
 export function TextInput(props: ComponentProps<'input'>) {
   return <input {...props} className={controlClass} />;
 }

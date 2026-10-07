@@ -8,8 +8,18 @@
   "color": "#C8963E",
   "verify": "Начало около 3100 г. до н. э. — приблизительно; конец — 30 г. до н. э. (смерть Клеопатры VII, Египет становится римской провинцией).",
   "regions": [
-    { "region": "nile-valley", "startYear": -3100, "endYear": -30, "dateApproximate": true },
-    { "region": "nile-delta", "startYear": -3100, "endYear": -30, "dateApproximate": true }
+    {
+      "region": "nile-valley",
+      "startYear": -3100,
+      "endYear": -30,
+      "dateApproximate": true
+    },
+    {
+      "region": "nile-delta",
+      "startYear": -3100,
+      "endYear": -30,
+      "dateApproximate": true
+    }
   ],
   "cards": [
     {
@@ -31,7 +41,12 @@
         "plutarch-isis-and-osiris",
         "mathieu-egyptian-myths"
       ],
-      "verify": "Начальная дата условно связана с Текстами пирамид (около XXIV в. до н. э.)."
+      "verify": "Начальная дата условно связана с Текстами пирамид (около XXIV в. до н. э.).",
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a0/Jewel_Osiris_family-E_6204-IMG_0641-gradient.jpg/960px-Jewel_Osiris_family-E_6204-IMG_0641-gradient.jpg",
+        "credit": "Rama · CC BY-SA 3.0 fr · [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Jewel_Osiris_family-E_6204-IMG_0641-gradient.jpg)",
+        "verify": "Проверить, что изображение соответствует карточке, и лицензию на странице файла."
+      }
     },
     {
       "slug": "ra-solar-barque",
@@ -46,7 +61,12 @@
       "startYear": -2500,
       "endYear": -30,
       "dateApproximate": true,
-      "sources": ["wilkinson-gods-and-goddesses", "mathieu-egyptian-myths"]
+      "sources": ["wilkinson-gods-and-goddesses", "mathieu-egyptian-myths"],
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3d/Solar_barque.svg/960px-Solar_barque.svg.png",
+        "credit": "HarJIT · CC0 · [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Solar_barque.svg)",
+        "verify": "Проверить, что изображение соответствует карточке, и лицензию на странице файла."
+      }
     },
     {
       "slug": "unification-of-egypt",
@@ -62,7 +82,12 @@
       "endYear": -3050,
       "dateApproximate": true,
       "sources": ["shaw-oxford-history-of-ancient-egypt", "britannica-ancient-egypt"],
-      "verify": "Отождествление Менеса с Нармером дискуссионно; даты приблизительные."
+      "verify": "Отождествление Менеса с Нармером дискуссионно; даты приблизительные.",
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/be/Narmer_Palette.jpg/960px-Narmer_Palette.jpg",
+        "credit": "Public domain · [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Narmer_Palette.jpg)",
+        "verify": "Проверить, что изображение соответствует карточке, и лицензию на странице файла."
+      }
     },
     {
       "slug": "battle-of-kadesh",
@@ -78,7 +103,12 @@
       "endYear": -1274,
       "dateApproximate": true,
       "sources": ["shaw-oxford-history-of-ancient-egypt", "britannica-ancient-egypt"],
-      "verify": "Год битвы зависит от принятой хронологии Нового царства (обычно 1274 г. до н. э.)."
+      "verify": "Год битвы зависит от принятой хронологии Нового царства (обычно 1274 г. до н. э.).",
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1b/Egypt_Abou_Simbel6.jpg/960px-Egypt_Abou_Simbel6.jpg",
+        "credit": "CC BY-SA 3.0 · [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Egypt_Abou_Simbel6.jpg)",
+        "verify": "Проверить, что изображение соответствует карточке, и лицензию на странице файла."
+      }
     },
     {
       "slug": "mummification",
@@ -93,7 +123,12 @@
       "startYear": -2600,
       "endYear": -30,
       "dateApproximate": true,
-      "sources": ["herodotus-histories", "shaw-oxford-history-of-ancient-egypt"]
+      "sources": ["herodotus-histories", "shaw-oxford-history-of-ancient-egypt"],
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/72/Ramses_I_Mummy.jpg/960px-Ramses_I_Mummy.jpg",
+        "credit": "Alyssa Bivins · CC BY-SA 4.0 · [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Ramses_I_Mummy.jpg)",
+        "verify": "Проверить, что изображение соответствует карточке, и лицензию на странице файла."
+      }
     },
     {
       "slug": "opet-festival",
@@ -109,7 +144,12 @@
       "endYear": -1070,
       "dateApproximate": true,
       "sources": ["shaw-oxford-history-of-ancient-egypt", "wilkinson-gods-and-goddesses"],
-      "verify": "Проверить формулировку про изображения Опет на «Красной капелле» Хатшепсут."
+      "verify": "Проверить формулировку про изображения Опет на «Красной капелле» Хатшепсут.",
+      "image": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/9/90/Luxor_temple_2.JPG",
+        "credit": "Charlesdrakew at English Wikipedia · Public domain · [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Luxor_temple_2.JPG)",
+        "verify": "Проверить, что изображение соответствует карточке, и лицензию на странице файла."
+      }
     },
     {
       "slug": "egyptian-hieroglyphs",
@@ -128,7 +168,12 @@
       "day": 27,
       "dateApproximate": true,
       "sources": ["britannica-ancient-egypt", "british-museum-rosetta-stone"],
-      "verify": "Дата для «Сегодня в истории» — 27 сентября 1822 г. («Письмо к господину Дасье»); проверить день."
+      "verify": "Дата для «Сегодня в истории» — 27 сентября 1822 г. («Письмо к господину Дасье»); проверить день.",
+      "image": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/c/c9/Hieroglyphs_from_the_tomb_of_Seti_I.jpg",
+        "credit": "Copyrighted free use · [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Hieroglyphs_from_the_tomb_of_Seti_I.jpg)",
+        "verify": "Проверить, что изображение соответствует карточке, и лицензию на странице файла."
+      }
     },
     {
       "slug": "egyptian-civil-calendar",
@@ -145,7 +190,12 @@
       "endYear": -30,
       "dateApproximate": true,
       "sources": ["shaw-oxford-history-of-ancient-egypt", "britannica-ancient-egypt"],
-      "verify": "Время введения гражданского календаря точно неизвестно; начальная дата условная."
+      "verify": "Время введения гражданского календаря точно неизвестно; начальная дата условная.",
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/00/Kom_Ombo_Temple_Calendar_2.JPG/960px-Kom_Ombo_Temple_Calendar_2.JPG",
+        "credit": "Ad Meskens · CC BY-SA 3.0 · [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Kom_Ombo_Temple_Calendar_2.JPG)",
+        "verify": "Проверить, что изображение соответствует карточке, и лицензию на странице файла."
+      }
     },
     {
       "slug": "nefertiti-bust",
@@ -160,7 +210,12 @@
       "startYear": -1345,
       "endYear": -1345,
       "dateApproximate": true,
-      "sources": ["berlin-egyptian-museum-nefertiti", "britannica-ancient-egypt"]
+      "sources": ["berlin-egyptian-museum-nefertiti", "britannica-ancient-egypt"],
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1f/Nofretete_Neues_Museum.jpg/960px-Nofretete_Neues_Museum.jpg",
+        "credit": "Philip Pikart · CC BY-SA 3.0 · [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Nofretete_Neues_Museum.jpg)",
+        "verify": "Проверить, что изображение соответствует карточке, и лицензию на странице файла."
+      }
     },
     {
       "slug": "great-sphinx",
@@ -176,7 +231,12 @@
       "endYear": -2532,
       "dateApproximate": true,
       "sources": ["shaw-oxford-history-of-ancient-egypt", "britannica-ancient-egypt"],
-      "verify": "Атрибуция Хафре — преобладающая, но не единственная точка зрения; даты правления приблизительные."
+      "verify": "Атрибуция Хафре — преобладающая, но не единственная точка зрения; даты правления приблизительные.",
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/42/Sphinx_with_the_third_pyramid.jpg/960px-Sphinx_with_the_third_pyramid.jpg",
+        "credit": "Hesham Ebaid · CC0 · [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Sphinx_with_the_third_pyramid.jpg)",
+        "verify": "Проверить, что изображение соответствует карточке, и лицензию на странице файла."
+      }
     },
     {
       "slug": "hatshepsut",
@@ -192,7 +252,12 @@
       "startYear": -1479,
       "endYear": -1458,
       "dateApproximate": true,
-      "sources": ["shaw-oxford-history-of-ancient-egypt", "britannica-ancient-egypt"]
+      "sources": ["shaw-oxford-history-of-ancient-egypt", "britannica-ancient-egypt"],
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/89/Seated_Statue_of_Hatshepsut_MET_Hatshepsut2012_%28cropped%29.jpg/960px-Seated_Statue_of_Hatshepsut_MET_Hatshepsut2012_%28cropped%29.jpg",
+        "credit": "CC0 · [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Seated_Statue_of_Hatshepsut_MET_Hatshepsut2012_(cropped).jpg)",
+        "verify": "Проверить, что изображение соответствует карточке, и лицензию на странице файла."
+      }
     },
     {
       "slug": "ramesses-ii",
@@ -208,7 +273,12 @@
       "endYear": -1213,
       "dateApproximate": true,
       "sources": ["shaw-oxford-history-of-ancient-egypt", "britannica-ancient-egypt"],
-      "verify": "Даты правления по общепринятой хронологии (возможны варианты)."
+      "verify": "Даты правления по общепринятой хронологии (возможны варианты).",
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cf/Ramses_II_British_Museum.jpg/960px-Ramses_II_British_Museum.jpg",
+        "credit": "Pbuergler · CC BY-SA 3.0 · [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Ramses_II_British_Museum.jpg)",
+        "verify": "Проверить, что изображение соответствует карточке, и лицензию на странице файла."
+      }
     },
     {
       "slug": "rosetta-stone",
@@ -226,7 +296,12 @@
       "day": 15,
       "dateApproximate": true,
       "sources": ["british-museum-rosetta-stone", "britannica-ancient-egypt"],
-      "verify": "Дата для «Сегодня в истории» — находка камня в июле 1799 г.; день (15 июля) в источниках разнится."
+      "verify": "Дата для «Сегодня в истории» — находка камня в июле 1799 г.; день (15 июля) в источниках разнится.",
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/23/Rosetta_Stone.JPG/960px-Rosetta_Stone.JPG",
+        "credit": "Hans Hillewaert · CC BY-SA 4.0 · [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Rosetta_Stone.JPG)",
+        "verify": "Проверить, что изображение соответствует карточке, и лицензию на странице файла."
+      }
     },
     {
       "slug": "tutankhamun-tomb",
@@ -244,7 +319,12 @@
       "day": 4,
       "dateApproximate": true,
       "sources": ["carter-tomb-of-tutankhamen", "shaw-oxford-history-of-ancient-egypt"],
-      "verify": "Где сейчас экспонируется маска (Египетский музей в Каире или Большой египетский музей) — уточнить, в тексте не указано."
+      "verify": "Где сейчас экспонируется маска (Египетский музей в Каире или Большой египетский музей) — уточнить, в тексте не указано.",
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f9/Inside_Pharaoh_Tutankhamun%27s_tomb%2C_18th_dynasty.jpg/960px-Inside_Pharaoh_Tutankhamun%27s_tomb%2C_18th_dynasty.jpg",
+        "credit": "EditorfromMars · CC BY-SA 4.0 · [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Inside_Pharaoh_Tutankhamun%27s_tomb,_18th_dynasty.jpg)",
+        "verify": "Проверить, что изображение соответствует карточке, и лицензию на странице файла."
+      }
     },
     {
       "slug": "great-pyramid",
@@ -260,20 +340,65 @@
       "endYear": -2560,
       "dateApproximate": true,
       "sources": ["britannica-ancient-egypt", "shaw-oxford-history-of-ancient-egypt"],
-      "verify": "Даты строительства приблизительные."
+      "verify": "Даты строительства приблизительные.",
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e7/Great_Pyramid_of_Giza_-_Pyramid_of_Khufu.jpg/960px-Great_Pyramid_of_Giza_-_Pyramid_of_Khufu.jpg",
+        "credit": "Douwe C. van der Zee · CC BY-SA 4.0 · [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Great_Pyramid_of_Giza_-_Pyramid_of_Khufu.jpg)",
+        "verify": "Проверить, что изображение соответствует карточке, и лицензию на странице файла."
+      }
     }
   ],
   "links": [
-    { "from": "osiris-myth", "to": "mummification", "type": "RELATED" },
-    { "from": "ra-solar-barque", "to": "osiris-myth", "type": "RELATED" },
-    { "from": "rosetta-stone", "to": "egyptian-hieroglyphs", "type": "RELATED" },
-    { "from": "battle-of-kadesh", "to": "ramesses-ii", "type": "RELATED" },
-    { "from": "tutankhamun-tomb", "to": "mummification", "type": "RELATED" },
-    { "from": "opet-festival", "to": "hatshepsut", "type": "RELATED" },
-    { "from": "great-pyramid", "to": "great-sphinx", "type": "RELATED" },
-    { "from": "unification-of-egypt", "to": "egyptian-hieroglyphs", "type": "RELATED" },
-    { "from": "egyptian-civil-calendar", "to": "opet-festival", "type": "RELATED" },
-    { "from": "nefertiti-bust", "to": "tutankhamun-tomb", "type": "RELATED" }
+    {
+      "from": "osiris-myth",
+      "to": "mummification",
+      "type": "RELATED"
+    },
+    {
+      "from": "ra-solar-barque",
+      "to": "osiris-myth",
+      "type": "RELATED"
+    },
+    {
+      "from": "rosetta-stone",
+      "to": "egyptian-hieroglyphs",
+      "type": "RELATED"
+    },
+    {
+      "from": "battle-of-kadesh",
+      "to": "ramesses-ii",
+      "type": "RELATED"
+    },
+    {
+      "from": "tutankhamun-tomb",
+      "to": "mummification",
+      "type": "RELATED"
+    },
+    {
+      "from": "opet-festival",
+      "to": "hatshepsut",
+      "type": "RELATED"
+    },
+    {
+      "from": "great-pyramid",
+      "to": "great-sphinx",
+      "type": "RELATED"
+    },
+    {
+      "from": "unification-of-egypt",
+      "to": "egyptian-hieroglyphs",
+      "type": "RELATED"
+    },
+    {
+      "from": "egyptian-civil-calendar",
+      "to": "opet-festival",
+      "type": "RELATED"
+    },
+    {
+      "from": "nefertiti-bust",
+      "to": "tutankhamun-tomb",
+      "type": "RELATED"
+    }
   ],
   "holidays": [
     {

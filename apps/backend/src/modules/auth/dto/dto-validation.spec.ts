@@ -15,9 +15,18 @@ function errorsOf<T extends object>(cls: new () => T, body: object): { dto: T; f
 }
 
 describe('Auth DTO validation', () => {
-  const validRegister = { email: 'user@example.com', password: 'Secret123', name: 'User' };
+  const validRegister = {
+    email: 'user@example.com',
+    password: 'Secret123',
+    name: 'User',
+    consent: true,
+  };
 
   describe('RegisterDto', () => {
+    it.each([false, undefined, 'true', 1])('requires consent === true (got %p)', (consent) => {
+      expect(errorsOf(RegisterDto, { ...validRegister, consent }).failed).toEqual(['consent']);
+    });
+
     it('accepts valid input', () => {
       expect(errorsOf(RegisterDto, validRegister).failed).toEqual([]);
     });

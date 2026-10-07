@@ -159,6 +159,12 @@ export function validateSeedData(data: SeedData): string[] {
       checkDayOfYear(issues, cardWhere, card.month, card.day);
       // Content rule: every card cites at least one real source
       if (card.sources.length === 0) issues.push(`${cardWhere}: has no sources`);
+      // Images are hotlinked from Wikimedia: https only, and the credit is mandatory (licences).
+      if (card.image) {
+        if (!card.image.url.startsWith('https://'))
+          issues.push(`${cardWhere}: image url must use https`);
+        if (!card.image.credit.trim()) issues.push(`${cardWhere}: image has no credit`);
+      }
       for (const s of card.sources) {
         if (!sourceSlugs.has(s)) issues.push(`${cardWhere}: unknown source "${s}"`);
       }
@@ -221,6 +227,7 @@ export function collectVerifyNotes(data: SeedData): string[] {
     add(`culture ${c.slug}`, c.verify);
     c.regions.forEach((r) => add(`culture ${c.slug} / region ${r.region}`, r.verify));
     c.cards.forEach((card) => add(`card ${card.slug}`, card.verify));
+    c.cards.forEach((card) => add(`card ${card.slug} / image`, card.image?.verify));
     c.links.forEach((l) => add(`link ${l.from} -> ${l.to}`, l.verify));
     c.holidays.forEach((h) => add(`holiday ${h.slug}`, h.verify));
   }

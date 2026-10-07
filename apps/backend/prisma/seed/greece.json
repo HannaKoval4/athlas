@@ -8,9 +8,24 @@
   "color": "#2F6DB5",
   "verify": "Границы условные: начало — эгейский бронзовый век (около 3000 г. до н. э.), конец — 146 г. до н. э. (разрушение Коринфа, подчинение Греции Риму). Иногда концом считают 31 г. до н. э.",
   "regions": [
-    { "region": "crete", "startYear": -3000, "endYear": -146, "dateApproximate": true },
-    { "region": "peloponnese", "startYear": -3000, "endYear": -146, "dateApproximate": true },
-    { "region": "central-greece", "startYear": -3000, "endYear": -146, "dateApproximate": true }
+    {
+      "region": "crete",
+      "startYear": -3000,
+      "endYear": -146,
+      "dateApproximate": true
+    },
+    {
+      "region": "peloponnese",
+      "startYear": -3000,
+      "endYear": -146,
+      "dateApproximate": true
+    },
+    {
+      "region": "central-greece",
+      "startYear": -3000,
+      "endYear": -146,
+      "dateApproximate": true
+    }
   ],
   "cards": [
     {
@@ -26,7 +41,12 @@
       "startYear": -750,
       "endYear": -146,
       "dateApproximate": true,
-      "sources": ["hesiod-theogony", "burkert-greek-religion"]
+      "sources": ["hesiod-theogony", "burkert-greek-religion"],
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3a/Greek_-_Procession_of_Twelve_Gods_and_Goddesses_-_Walters_2340.jpg/960px-Greek_-_Procession_of_Twelve_Gods_and_Goddesses_-_Walters_2340.jpg",
+        "credit": "Public domain · [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Greek_-_Procession_of_Twelve_Gods_and_Goddesses_-_Walters_2340.jpg)",
+        "verify": "Проверить, что изображение соответствует карточке, и лицензию на странице файла."
+      }
     },
     {
       "slug": "trojan-war-myth",
@@ -42,7 +62,12 @@
       "endYear": -1180,
       "dateApproximate": true,
       "sources": ["homer-iliad", "cartledge-cambridge-history-of-greece"],
-      "verify": "Период — условное время действия мифа (конец бронзового века); историчность войны не доказана."
+      "verify": "Период — условное время действия мифа (конец бронзового века); историчность войны не доказана.",
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/ba/Akhilleus_Patroklos_Antikensammlung_Berlin_F2278.jpg/960px-Akhilleus_Patroklos_Antikensammlung_Berlin_F2278.jpg",
+        "credit": "Sosias Painter (роспись), Sosias (гончар) · Public domain · [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Akhilleus_Patroklos_Antikensammlung_Berlin_F2278.jpg)",
+        "verify": "Проверить, что изображение соответствует карточке, и лицензию на странице файла."
+      }
     },
     {
       "slug": "first-olympic-games",
@@ -58,7 +83,12 @@
       "endYear": -776,
       "dateApproximate": true,
       "sources": ["cartledge-cambridge-history-of-greece", "britannica-ancient-greece"],
-      "verify": "776 г. до н. э. — традиционная дата, установленная античными авторами; её точность обсуждается."
+      "verify": "776 г. до н. э. — традиционная дата, установленная античными авторами; её точность обсуждается.",
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/GR-olympia-palaestra.jpg/960px-GR-olympia-palaestra.jpg",
+        "credit": "Bgabel · CC BY-SA 3.0 · [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:GR-olympia-palaestra.jpg)",
+        "verify": "Проверить, что изображение соответствует карточке, и лицензию на странице файла."
+      }
     },
     {
       "slug": "battle-of-marathon",
@@ -77,7 +107,12 @@
       "day": 12,
       "dateApproximate": true,
       "sources": ["herodotus-histories", "cartledge-cambridge-history-of-greece"],
-      "verify": "12 сентября — традиционный пересчёт даты в современный календарь (август или сентябрь 490 г. до н. э. — спорно)."
+      "verify": "12 сентября — традиционный пересчёт даты в современный календарь (август или сентябрь 490 г. до н. э. — спорно).",
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Scene_of_the_Battle_of_Marathon.jpg/960px-Scene_of_the_Battle_of_Marathon.jpg",
+        "credit": "John Steeple Davis · Public domain · [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Scene_of_the_Battle_of_Marathon.jpg)",
+        "verify": "Проверить, что изображение соответствует карточке, и лицензию на странице файла."
+      }
     },
     {
       "slug": "panathenaia",
@@ -93,7 +128,12 @@
       "endYear": -146,
       "dateApproximate": true,
       "sources": ["burkert-greek-religion", "cartledge-cambridge-history-of-greece"],
-      "verify": "Реорганизация Великих Панафиней традиционно датируется 566/565 г. до н. э.; праздник продолжался и в римское время."
+      "verify": "Реорганизация Великих Панафиней традиционно датируется 566/565 г. до н. э.; праздник продолжался и в римское время.",
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Greek_vase_with_runners_at_the_panathenaic_games_530_bC.jpg/960px-Greek_vase_with_runners_at_the_panathenaic_games_530_bC.jpg",
+        "credit": "Matthias Kabel · CC BY 2.5 · [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Greek_vase_with_runners_at_the_panathenaic_games_530_bC.jpg)",
+        "verify": "Проверить, что изображение соответствует карточке, и лицензию на странице файла."
+      }
     },
     {
       "slug": "symposium",
@@ -108,7 +148,12 @@
       "startYear": -700,
       "endYear": -146,
       "dateApproximate": true,
-      "sources": ["cartledge-cambridge-history-of-greece"]
+      "sources": ["cartledge-cambridge-history-of-greece"],
+      "image": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/5/5c/Tomb_of_the_Diver_symposium.jpg",
+        "credit": "Public domain · [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Tomb_of_the_Diver_symposium.jpg)",
+        "verify": "Проверить, что изображение соответствует карточке, и лицензию на странице файла."
+      }
     },
     {
       "slug": "athenian-democracy",
@@ -124,7 +169,12 @@
       "endYear": -322,
       "dateApproximate": true,
       "sources": ["cartledge-cambridge-history-of-greece", "britannica-ancient-greece"],
-      "verify": "Конечная дата — 322 г. до н. э. (ограничение демократии после Ламийской войны)."
+      "verify": "Конечная дата — 322 г. до н. э. (ограничение демократии после Ламийской войны).",
+      "image": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/f/f1/Discurso_funebre_pericles.PNG",
+        "credit": "Philipp Foltz · Public domain · [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Discurso_funebre_pericles.PNG)",
+        "verify": "Проверить, что изображение соответствует карточке, и лицензию на странице файла."
+      }
     },
     {
       "slug": "greek-alphabet",
@@ -140,7 +190,12 @@
       "endYear": -146,
       "dateApproximate": true,
       "sources": ["britannica-ancient-greece", "dyakonov-history-of-ancient-world"],
-      "verify": "Время заимствования (IX или VIII в. до н. э.) дискуссионно."
+      "verify": "Время заимствования (IX или VIII в. до н. э.) дискуссионно.",
+      "image": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/a/af/NAMA_Dipylon_Oinochoe.JPG",
+        "credit": "Dorieo · Public domain · [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:NAMA_Dipylon_Oinochoe.JPG)",
+        "verify": "Проверить, что изображение соответствует карточке, и лицензию на странице файла."
+      }
     },
     {
       "slug": "knossos-palace",
@@ -156,7 +211,12 @@
       "endYear": -1350,
       "dateApproximate": true,
       "sources": ["cartledge-cambridge-history-of-greece", "dyakonov-history-of-ancient-world"],
-      "verify": "Даты существования дворца приблизительные."
+      "verify": "Даты существования дворца приблизительные.",
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ea/Knossos_-_North_Portico_02.jpg/960px-Knossos_-_North_Portico_02.jpg",
+        "credit": "Bernard Gagnon · CC BY-SA 3.0 · [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Knossos_-_North_Portico_02.jpg)",
+        "verify": "Проверить, что изображение соответствует карточке, и лицензию на странице файла."
+      }
     },
     {
       "slug": "parthenon",
@@ -170,7 +230,12 @@
       ],
       "startYear": -447,
       "endYear": -432,
-      "sources": ["cartledge-cambridge-history-of-greece", "britannica-ancient-greece"]
+      "sources": ["cartledge-cambridge-history-of-greece", "britannica-ancient-greece"],
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/da/The_Parthenon_in_Athens.jpg/960px-The_Parthenon_in_Athens.jpg",
+        "credit": "Steve Swayne · CC BY 2.0 · [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:The_Parthenon_in_Athens.jpg)",
+        "verify": "Проверить, что изображение соответствует карточке, и лицензию на странице файла."
+      }
     },
     {
       "slug": "venus-de-milo",
@@ -186,7 +251,12 @@
       "endYear": -125,
       "dateApproximate": true,
       "sources": ["louvre-venus-de-milo"],
-      "verify": "Датировка и атрибуция приблизительные."
+      "verify": "Датировка и атрибуция приблизительные.",
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c2/Front_views_of_the_Venus_de_Milo.jpg/960px-Front_views_of_the_Venus_de_Milo.jpg",
+        "credit": "Livioandronico2013 · CC BY-SA 4.0 · [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Front_views_of_the_Venus_de_Milo.jpg)",
+        "verify": "Проверить, что изображение соответствует карточке, и лицензию на странице файла."
+      }
     },
     {
       "slug": "pericles",
@@ -201,7 +271,12 @@
       "startYear": -495,
       "endYear": -429,
       "dateApproximate": true,
-      "sources": ["thucydides-history", "cartledge-cambridge-history-of-greece"]
+      "sources": ["thucydides-history", "cartledge-cambridge-history-of-greece"],
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4b/Pericles_Pio-Clementino_Inv269_n2.jpg/960px-Pericles_Pio-Clementino_Inv269_n2.jpg",
+        "credit": "Public domain · [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Pericles_Pio-Clementino_Inv269_n2.jpg)",
+        "verify": "Проверить, что изображение соответствует карточке, и лицензию на странице файла."
+      }
     },
     {
       "slug": "socrates",
@@ -216,7 +291,12 @@
       "startYear": -470,
       "endYear": -399,
       "dateApproximate": true,
-      "sources": ["plato-apology", "cartledge-cambridge-history-of-greece"]
+      "sources": ["plato-apology", "cartledge-cambridge-history-of-greece"],
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a4/Socrates_Louvre.jpg/960px-Socrates_Louvre.jpg",
+        "credit": "Public domain · [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Socrates_Louvre.jpg)",
+        "verify": "Проверить, что изображение соответствует карточке, и лицензию на странице файла."
+      }
     },
     {
       "slug": "antikythera-mechanism",
@@ -232,7 +312,12 @@
       "endYear": -60,
       "dateApproximate": true,
       "sources": ["freeth-antikythera-2006", "national-archaeological-museum-athens"],
-      "verify": "Датировка механизма дискуссионна (оценки от конца III до I в. до н. э.); год подъёма (1900 или 1901) уточнить."
+      "verify": "Датировка механизма дискуссионна (оценки от конца III до I в. до н. э.); год подъёма (1900 или 1901) уточнить.",
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c8/Antikythera_Fragment_A_%28Front%29.webp/960px-Antikythera_Fragment_A_%28Front%29.webp",
+        "credit": "Logg Tandy · CC BY 4.0 · [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Antikythera_Fragment_A_(Front).webp)",
+        "verify": "Проверить, что изображение соответствует карточке, и лицензию на странице файла."
+      }
     },
     {
       "slug": "mask-of-agamemnon",
@@ -247,23 +332,80 @@
       "startYear": -1550,
       "endYear": -1500,
       "dateApproximate": true,
-      "sources": ["national-archaeological-museum-athens", "cartledge-cambridge-history-of-greece"]
+      "sources": ["national-archaeological-museum-athens", "cartledge-cambridge-history-of-greece"],
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/78/Athens_%E2%80%94_Mask_of_Agamemnon.jpg/960px-Athens_%E2%80%94_Mask_of_Agamemnon.jpg",
+        "credit": "Gleb Simonov · Public domain · [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Athens_%E2%80%94_Mask_of_Agamemnon.jpg)",
+        "verify": "Проверить, что изображение соответствует карточке, и лицензию на странице файла."
+      }
     }
   ],
   "links": [
-    { "from": "olympian-gods", "to": "panathenaia", "type": "RELATED" },
-    { "from": "parthenon", "to": "panathenaia", "type": "DEPICTS" },
-    { "from": "pericles", "to": "parthenon", "type": "RELATED" },
-    { "from": "pericles", "to": "athenian-democracy", "type": "RELATED" },
-    { "from": "socrates", "to": "athenian-democracy", "type": "RELATED" },
-    { "from": "socrates", "to": "symposium", "type": "RELATED" },
-    { "from": "trojan-war-myth", "to": "mask-of-agamemnon", "type": "RELATED" },
-    { "from": "trojan-war-myth", "to": "olympian-gods", "type": "RELATED" },
-    { "from": "first-olympic-games", "to": "olympian-gods", "type": "RELATED" },
-    { "from": "battle-of-marathon", "to": "athenian-democracy", "type": "RELATED" },
-    { "from": "knossos-palace", "to": "mask-of-agamemnon", "type": "RELATED" },
-    { "from": "antikythera-mechanism", "to": "first-olympic-games", "type": "MENTIONS" },
-    { "from": "venus-de-milo", "to": "olympian-gods", "type": "DEPICTS" }
+    {
+      "from": "olympian-gods",
+      "to": "panathenaia",
+      "type": "RELATED"
+    },
+    {
+      "from": "parthenon",
+      "to": "panathenaia",
+      "type": "DEPICTS"
+    },
+    {
+      "from": "pericles",
+      "to": "parthenon",
+      "type": "RELATED"
+    },
+    {
+      "from": "pericles",
+      "to": "athenian-democracy",
+      "type": "RELATED"
+    },
+    {
+      "from": "socrates",
+      "to": "athenian-democracy",
+      "type": "RELATED"
+    },
+    {
+      "from": "socrates",
+      "to": "symposium",
+      "type": "RELATED"
+    },
+    {
+      "from": "trojan-war-myth",
+      "to": "mask-of-agamemnon",
+      "type": "RELATED"
+    },
+    {
+      "from": "trojan-war-myth",
+      "to": "olympian-gods",
+      "type": "RELATED"
+    },
+    {
+      "from": "first-olympic-games",
+      "to": "olympian-gods",
+      "type": "RELATED"
+    },
+    {
+      "from": "battle-of-marathon",
+      "to": "athenian-democracy",
+      "type": "RELATED"
+    },
+    {
+      "from": "knossos-palace",
+      "to": "mask-of-agamemnon",
+      "type": "RELATED"
+    },
+    {
+      "from": "antikythera-mechanism",
+      "to": "first-olympic-games",
+      "type": "MENTIONS"
+    },
+    {
+      "from": "venus-de-milo",
+      "to": "olympian-gods",
+      "type": "DEPICTS"
+    }
   ],
   "holidays": [
     {

@@ -25,6 +25,14 @@ export class UserProfileDto implements UserProfile {
 
   @ApiProperty({ format: 'date-time' })
   createdAt: string;
+
+  @ApiProperty({
+    type: String,
+    format: 'date-time',
+    nullable: true,
+    description: 'When consent to personal data processing was given; null for seeded accounts',
+  })
+  consentAt: string | null;
 }
 
 export function toUserProfile(user: User): UserProfileDto {
@@ -36,5 +44,6 @@ export function toUserProfile(user: User): UserProfileDto {
     theme: user.theme,
     locale: user.locale,
     createdAt: user.createdAt.toISOString(),
+    consentAt: user.consentAt?.toISOString() ?? null,
   };
 }

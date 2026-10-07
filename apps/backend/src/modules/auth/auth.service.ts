@@ -30,7 +30,8 @@ export class AuthService {
     let user: User;
     try {
       user = await this.prisma.user.create({
-        data: { email: dto.email, name: dto.name, passwordHash },
+        // The DTO accepts only consent === true, so reaching this line means consent was given.
+        data: { email: dto.email, name: dto.name, passwordHash, consentAt: new Date() },
       });
     } catch (error) {
       // The UNIQUE index is the source of truth, so even two simultaneous sign-ups cannot both win.

@@ -81,6 +81,11 @@ export default defineConfig([
     },
   },
   {
+    // shadcn/ui components are generated code that exports style variants next to components.
+    files: ['apps/frontend/src/components/ui/**/*.tsx'],
+    rules: { 'react-refresh/only-export-components': 'off' },
+  },
+  {
     files: ['apps/frontend/e2e/**/*.ts', 'apps/frontend/*.config.ts'],
     languageOptions: { globals: globals.node },
   },

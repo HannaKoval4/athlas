@@ -8,7 +8,7 @@ import { isApiError } from '../api/client.ts';
 import { useLogin, useRegister } from '../auth/api.ts';
 import type { RedirectState } from '../auth/route-guards.tsx';
 import { type LoginForm, type RegisterForm, loginSchema, registerSchema } from '../auth/schemas.ts';
-import { Field, FormError, SubmitButton, TextInput } from '../components/form.tsx';
+import { CheckboxField, Field, FormError, SubmitButton, TextInput } from '../components/form.tsx';
 
 /** Server errors are mapped by status code; the UI never shows raw English API messages. */
 function authErrorMessage(error: unknown, t: TFunction): string | undefined {
@@ -16,6 +16,8 @@ function authErrorMessage(error: unknown, t: TFunction): string | undefined {
   if (isApiError(error, 401)) return t('auth.errors.invalidCredentials');
   if (isApiError(error, 409)) return t('auth.errors.emailTaken');
   if (isApiError(error, 429)) return t('auth.errors.tooManyAttempts');
+  // fetch() rejects without a response when the API is down or unreachable.
+  if (!isApiError(error)) return t('auth.errors.serverUnavailable');
   return t('auth.errors.generic');
 }
 
@@ -102,7 +104,10 @@ export function RegisterPage() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterForm>({ resolver: zodResolver(registerSchema) });
+  } = useForm<RegisterForm>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: { consent: false },
+  });
 
   return (
     <AuthCard title={t('auth.registerTitle')}>
@@ -154,6 +159,12 @@ export function RegisterPage() {
             />
           )}
         </Field>
+        <CheckboxField
+          label={t('auth.consent')}
+          error={errors.consent?.message}
+          data-testid="consent-checkbox"
+          {...register('consent')}
+        />
         <SubmitButton disabled={signUp.isPending} data-testid="register-submit">
           {t('auth.submitRegister')}
         </SubmitButton>

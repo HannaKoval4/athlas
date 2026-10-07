@@ -1,6 +1,7 @@
 import {
   assertValidYear,
   clampYear,
+  formatPeriod,
   formatYear,
   isValidYear,
   isYearInPeriod,
@@ -130,5 +131,19 @@ describe('middleYear', () => {
 
   it('returns the only year of a one-year period', () => {
     expect(middleYear(476, 476)).toBe(476);
+  });
+});
+
+describe('formatPeriod', () => {
+  it('shows a single year when the period is one year long', () => {
+    expect(formatPeriod(-490, -490)).toBe(formatYear(-490));
+  });
+
+  it('joins both ends with an en dash', () => {
+    expect(formatPeriod(-447, -432, 'en')).toBe('447 BCE – 432 BCE');
+  });
+
+  it('crosses the era boundary', () => {
+    expect(formatPeriod(-30, 14, 'en')).toBe('30 BCE – 14 CE');
   });
 });

@@ -1,6 +1,7 @@
 import type { MapRegion } from '@atlas/shared';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Outlet } from 'react-router';
 import { useEras, useMapSlice } from '../atlas/api.ts';
 import { AtlasMap } from '../atlas/AtlasMap.tsx';
 import { EraYearBar } from '../atlas/EraYearBar.tsx';
@@ -8,7 +9,10 @@ import { RegionPanel } from '../atlas/RegionPanel.tsx';
 import { useSelection } from '../atlas/selection.ts';
 import { LoadingScreen } from '../components/LoadingScreen.tsx';
 
-/** Main screen: era/year tab on top, the map with the time slice, the region panel on the side. */
+/**
+ * Main screen: era/year tab on top, the map with the time slice, the region panel on the side.
+ * Also the parent of /cultures/:slug, so the map stays mounted under the culture drawer.
+ */
 export function MapPage() {
   const { t } = useTranslation();
   const eras = useEras();
@@ -49,7 +53,8 @@ export function MapPage() {
         onYearChange={selectYear}
       />
       <div className="flex min-h-0 flex-1 flex-col md:flex-row">
-        <div className="relative min-h-80 flex-1">
+        {/* isolate: Leaflet panes use z-index 400+; keep them below drawers and popovers. */}
+        <div className="relative isolate min-h-80 flex-1">
           <AtlasMap
             regions={regions}
             selectedId={selected?.id ?? null}
@@ -85,6 +90,8 @@ export function MapPage() {
           onSelect={(region) => setSelectedId(region?.id ?? null)}
         />
       </div>
+      {/* /cultures/:slug renders the culture drawer here, on top of the map. */}
+      <Outlet />
     </div>
   );
 }

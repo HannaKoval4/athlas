@@ -23,7 +23,7 @@ describe('Users API: profile and password (e2e)', () => {
     const agent = request.agent(server());
     await agent
       .post('/api/auth/register')
-      .send({ email, password: PASSWORD, name: 'Old' })
+      .send({ email, password: PASSWORD, name: 'Old', consent: true })
       .expect(201);
     return agent;
   }

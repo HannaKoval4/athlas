@@ -85,6 +85,16 @@ Seed-данные лежат в `apps/backend/prisma/seed/` (JSON + GeoJSON). П
 - API: `GET /api/eras`, `GET /api/map?year=-450&era=antiquity` (регионы с культурами, у которых есть опубликованные карточки, BR-04; год вне эпохи → 400, BR-05).
 - UI-тесты не обращаются к серверу тайлов (запросы блокируются в `e2e/fixtures.ts`).
 
+## Культуры и карточки
+
+- Панель культуры открывается поверх карты: `/cultures/ancient-greece?era=antiquity&year=-450` (`&all=1` — все карточки, `&type=PERSON` — активная вкладка).
+- Карточка: `/cards/parthenon` — текст (Markdown), период, источники, связанные карточки в обе стороны, «Показать на карте».
+- API: `GET /api/cultures`, `GET /api/cultures/:slug?year=`, `GET /api/cards?cultureId&type&year&eraId&page&pageSize`, `GET /api/cards/:slug`. Пользователь видит только опубликованные карточки, admin — и черновики (BR-06).
+- В панели культуры: галерея-карусель иллюстрированных карточек и граф связей (`&view=graph`, API `GET /api/cultures/:slug/graph?year=`).
+- Иллюстрации — с Wikimedia Commons (свободные лицензии), подпись с автором, лицензией и ссылкой на страницу файла хранится в `imageCredit`. Все 30 изображений отмечены в seed как VERIFY.
+- Регистрация требует согласия на обработку персональных данных (галочка; сервер принимает только `consent: true`), дата согласия хранится в `User.consentAt`.
+- UI-компоненты: shadcn/ui (`apps/frontend/src/components/ui`, добавлять командой `pnpm dlx shadcn@latest add <component>` из `apps/frontend`).
+
 ## Замечания по окружению
 
 - Переводы строк — LF (`.gitattributes`, `.editorconfig`), чтобы на Windows не возникало лишних диффов.

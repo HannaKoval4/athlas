@@ -1,5 +1,6 @@
 import { type MapRegion, formatYear } from '@atlas/shared';
 import { useTranslation } from 'react-i18next';
+import { Link, useSearchParams } from 'react-router';
 
 interface RegionPanelProps {
   year: number;
@@ -14,6 +15,8 @@ interface RegionPanelProps {
  */
 export function RegionPanel({ year, regions, selected, onSelect }: RegionPanelProps) {
   const { t } = useTranslation();
+  // The culture drawer keeps the map's ?era=&year= so closing it returns to the same view.
+  const [params] = useSearchParams();
 
   return (
     <aside
@@ -81,7 +84,12 @@ export function RegionPanel({ year, regions, selected, onSelect }: RegionPanelPr
                   className="size-3 shrink-0 rounded-full"
                   style={{ backgroundColor: culture.color }}
                 />
-                <span>{culture.name}</span>
+                <Link
+                  to={{ pathname: `/cultures/${culture.slug}`, search: params.toString() }}
+                  className="font-medium text-amber-900 underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-amber-700"
+                >
+                  {culture.name}
+                </Link>
                 {culture.dateApproximate && (
                   <span className="text-xs text-stone-600">({t('map.approximate')})</span>
                 )}

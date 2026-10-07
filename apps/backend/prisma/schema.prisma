@@ -78,6 +78,8 @@ model User {
   role          Role              @default(USER)
   theme         ThemePreference   @default(SYSTEM)
   locale        Locale            @default(RU)
+  /// Consent to personal data processing given at sign-up; null for accounts created by the seed
+  consentAt     DateTime?
   createdAt     DateTime          @default(now())
   updatedAt     DateTime          @updatedAt
   refreshTokens RefreshToken[]

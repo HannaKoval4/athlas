@@ -20,6 +20,8 @@ export interface LoginInput {
 
 export interface RegisterInput extends LoginInput {
   name: string;
+  /** Consent to personal data processing (must be true) */
+  consent: boolean;
 }
 
 export interface ProfileInput {

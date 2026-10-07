@@ -156,6 +156,8 @@ export async function seedDatabase(
             month: card.month ?? null,
             day: card.day ?? null,
             dateApproximate: card.dateApproximate ?? false,
+            imageUrl: card.image?.url ?? null,
+            imageCredit: card.image?.credit ?? null,
             published: true,
             publishedAt: new Date(firstPublishedAt.getTime() + cardIndex * DAY_MS),
           };

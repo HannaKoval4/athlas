@@ -1,17 +1,9 @@
-import { API, PASSWORD, expect, test, uniqueEmail } from './fixtures.ts';
+import { expect, expectSelection, userTest as test } from './fixtures.ts';
 
 // Runs against the seeded dev database: Ancient Egypt (Nile valley and delta, -3100 .. -30)
 // and Ancient Greece (Crete, Peloponnese, Central Greece, -3000 .. -146); eras early-antiquity,
 // antiquity (-1200 .. 476) and early-middle-ages (no cultures seeded yet).
 const BCE = /г\. до\s*н\.\s*э\./;
-
-test.beforeEach(async ({ page }) => {
-  // page.request shares the browser context's cookies, so the page is logged in afterwards.
-  const res = await page.request.post(`${API}/auth/register`, {
-    data: { email: uniqueEmail(), password: PASSWORD, name: 'Map' },
-  });
-  expect(res.status()).toBe(201);
-});
 
 test.describe('Map time slice', () => {
   test('highlights the regions of the year and shows the cultures of a clicked region', async ({
@@ -95,14 +87,14 @@ test.describe('Map time slice', () => {
   test('a broken URL is normalised to a valid era and year', async ({ page }) => {
     await page.goto('/?era=no-such-era&year=-450');
     // The year decides the era when the era slug is unknown.
-    await expect(page).toHaveURL(/era=antiquity&year=-450$/);
+    await expectSelection(page, 'antiquity', '-450');
 
     await page.goto('/?era=antiquity&year=-3000');
     // A year outside the era is clamped to the era's start.
-    await expect(page).toHaveURL(/era=antiquity&year=-1200$/);
+    await expectSelection(page, 'antiquity', '-1200');
 
     await page.goto('/?year=abc');
-    await expect(page).toHaveURL(/era=early-antiquity&year=-\d+$/);
+    await expectSelection(page, 'early-antiquity', /-\d+/);
   });
 
   test('regions can be chosen from the keyboard via the list', async ({ page }) => {

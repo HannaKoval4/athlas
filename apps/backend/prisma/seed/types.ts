@@ -49,6 +49,12 @@ export interface SeedCultureRegion extends Verifiable {
   dateApproximate?: boolean;
 }
 
+/** Illustration from Wikimedia Commons; credit is Markdown (author · licence · link to the file page). */
+export interface SeedCardImage extends Verifiable {
+  url: string;
+  credit: string;
+}
+
 export interface SeedCard extends Verifiable {
   slug: string;
   type: CardType;
@@ -63,6 +69,7 @@ export interface SeedCard extends Verifiable {
   dateApproximate?: boolean;
   /** Source slugs (at least one) */
   sources: string[];
+  image?: SeedCardImage;
 }
 
 export interface SeedCardLink extends Verifiable {

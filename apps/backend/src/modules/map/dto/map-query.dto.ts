@@ -1,15 +1,10 @@
-import { MAX_YEAR, MIN_YEAR } from '@atlas/shared';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
-import { IsInt, IsOptional, Matches, Max, MaxLength, Min, NotEquals } from 'class-validator';
+import { IsOptional, Matches, MaxLength } from 'class-validator';
+import { IsHistoricalYear } from '../../../common/query.validators';
 
 export class MapQueryDto {
   @ApiProperty({ example: -450, description: 'Negative = BCE; there is no year 0 (DM-01)' })
-  @Type(() => Number)
-  @IsInt({ message: 'year must be an integer' })
-  @NotEquals(0, { message: 'year 0 does not exist' })
-  @Min(MIN_YEAR)
-  @Max(MAX_YEAR)
+  @IsHistoricalYear()
   year: number;
 
   @ApiPropertyOptional({

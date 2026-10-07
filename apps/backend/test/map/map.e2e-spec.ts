@@ -67,7 +67,7 @@ describe('Eras and map time slice (e2e)', () => {
     user = request.agent(server());
     await user
       .post('/api/auth/register')
-      .send({ email: 'map@example.com', password: 'Secret123', name: 'Map' })
+      .send({ email: 'map@example.com', password: 'Secret123', name: 'Map', consent: true })
       .expect(201);
   });
 

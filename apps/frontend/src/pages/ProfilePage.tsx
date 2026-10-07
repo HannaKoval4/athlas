@@ -38,7 +38,7 @@ export function ProfilePage() {
 }
 
 function ProfileDetails({ user }: { user: UserProfile }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const update = useUpdateProfile();
   const {
     register,
@@ -55,6 +55,13 @@ function ProfileDetails({ user }: { user: UserProfile }) {
       <h2 id="profile-details" className="text-xl font-semibold">
         {t('profile.detailsTitle')}
       </h2>
+      <p className="text-sm text-stone-600" data-testid="profile-consent">
+        {user.consentAt
+          ? t('profile.consentGiven', {
+              date: new Date(user.consentAt).toLocaleDateString(i18n.language),
+            })
+          : t('profile.consentMissing')}
+      </p>
       <form
         noValidate
         className="flex flex-col gap-4"

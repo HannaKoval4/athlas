@@ -37,7 +37,7 @@ describe('AuthService', () => {
   });
 
   describe('register', () => {
-    const dto = { email: 'new@example.com', password: 'Secret123', name: 'New' };
+    const dto = { email: 'new@example.com', password: 'Secret123', name: 'New', consent: true };
 
     it('stores the argon2 hash, never the plain password, and opens a session', async () => {
       prisma.user.create.mockResolvedValue({ ...existingUser, email: dto.email });
@@ -46,7 +46,12 @@ describe('AuthService', () => {
 
       expect(passwords.hash).toHaveBeenCalledWith('Secret123');
       expect(prisma.user.create).toHaveBeenCalledWith({
-        data: { email: dto.email, name: dto.name, passwordHash: 'new-hash' },
+        data: {
+          email: dto.email,
+          name: dto.name,
+          passwordHash: 'new-hash',
+          consentAt: expect.any(Date) as unknown,
+        },
       });
       expect(result.tokens).toBe(tokens);
     });

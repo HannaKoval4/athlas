@@ -42,7 +42,7 @@ describe('Auth throttling (e2e)', () => {
   it('counts each route separately and does not throttle /auth/me or health', async () => {
     await request(server())
       .post('/api/auth/register')
-      .send({ email: 'fresh@example.com', password: 'Secret123', name: 'F' })
+      .send({ email: 'fresh@example.com', password: 'Secret123', name: 'F', consent: true })
       .expect(201);
 
     for (let i = 0; i < LIMIT + 2; i += 1) {

@@ -39,7 +39,7 @@ describe('Role guard (e2e)', () => {
     const agent = request.agent(server());
     await agent
       .post('/api/auth/register')
-      .send({ email, password: 'Secret123', name: 'R' })
+      .send({ email, password: 'Secret123', name: 'R', consent: true })
       .expect(201);
     if (role !== Role.USER) {
       // There is no API to grant roles (by design); promote directly and log in again,

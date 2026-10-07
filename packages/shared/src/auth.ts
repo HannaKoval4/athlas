@@ -34,4 +34,6 @@ export interface UserProfile {
   theme: ThemePreference;
   locale: Locale;
   createdAt: string;
+  /** ISO date of the consent to personal data processing; null for seeded accounts */
+  consentAt: string | null;
 }

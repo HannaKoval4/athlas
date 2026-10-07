@@ -45,12 +45,21 @@ export function useSelection(eras: EraSummary[] | undefined) {
     [eras, eraParam, yearParam],
   );
 
-  // Normalise an invalid or partial URL in place (no extra history entry).
+  // Normalise an invalid or partial URL in place (no extra history entry). Other parameters
+  // (e.g. the culture drawer's ?all=&type=) are kept.
   useEffect(() => {
     if (!selection) return;
     const year = String(selection.year);
     if (eraParam !== selection.era.slug || yearParam !== year) {
-      setParams({ era: selection.era.slug, year }, { replace: true });
+      setParams(
+        (current) => {
+          const next = new URLSearchParams(current);
+          next.set('era', selection.era.slug);
+          next.set('year', year);
+          return next;
+        },
+        { replace: true },
+      );
     }
   }, [selection, eraParam, yearParam, setParams]);
 

@@ -67,3 +67,9 @@ export function middleYear(startYear: number, endYear: number): number {
   const end = yearToOrdinal(endYear);
   return ordinalToYear(Math.floor((start + end) / 2));
 }
+
+/** A period for display: one year when start = end, otherwise "start – end". */
+export function formatPeriod(startYear: number, endYear: number, locale: AppLocale = 'ru'): string {
+  if (startYear === endYear) return formatYear(startYear, locale);
+  return `${formatYear(startYear, locale)} – ${formatYear(endYear, locale)}`;
+}

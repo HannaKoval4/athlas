@@ -9,6 +9,7 @@ async function registerViaUi(page: Page, name: string, email: string, password =
   await page.getByTestId('name-input').fill(name);
   await page.getByTestId('email-input').fill(email);
   await page.getByTestId('password-input').fill(password);
+  await page.getByTestId('consent-checkbox').check();
   await page.getByTestId('register-submit').click();
 }
 
@@ -25,7 +26,7 @@ test.describe('Authentication', () => {
   }) => {
     const email = uniqueEmail();
     await request.post(`${API}/auth/register`, {
-      data: { email, password: PASSWORD, name: 'Redirect' },
+      data: { email, password: PASSWORD, name: 'Redirect', consent: true },
     });
 
     await page.goto('/profile');
@@ -62,13 +63,29 @@ test.describe('Authentication', () => {
     await expect(page).toHaveURL(/\/register$/);
   });
 
+  test('registration requires consent to personal data processing', async ({ page }) => {
+    await page.goto('/register');
+    await page.getByTestId('name-input').fill('NoConsent');
+    await page.getByTestId('email-input').fill(uniqueEmail());
+    await page.getByTestId('password-input').fill(PASSWORD);
+    await page.getByTestId('register-submit').click();
+
+    await expect(page.getByText('Без согласия на обработку персональных данных')).toBeVisible();
+    await expect(page.getByTestId('consent-checkbox')).toHaveAttribute('aria-invalid', 'true');
+    await expect(page).toHaveURL(/\/register$/);
+
+    await page.getByTestId('consent-checkbox').check();
+    await page.getByTestId('register-submit').click();
+    await expect(page.getByTestId('atlas-map')).toBeVisible();
+  });
+
   test('registration with a taken e-mail shows a conflict message (BR-01)', async ({
     page,
     request,
   }) => {
     const email = uniqueEmail();
     await request.post(`${API}/auth/register`, {
-      data: { email, password: PASSWORD, name: 'First' },
+      data: { email, password: PASSWORD, name: 'First', consent: true },
     });
 
     await registerViaUi(page, 'Second', email.toUpperCase());
@@ -82,7 +99,7 @@ test.describe('Authentication', () => {
   }) => {
     const email = uniqueEmail();
     await request.post(`${API}/auth/register`, {
-      data: { email, password: PASSWORD, name: 'Wrong' },
+      data: { email, password: PASSWORD, name: 'Wrong', consent: true },
     });
     await page.goto('/login');
 

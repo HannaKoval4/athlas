@@ -2,6 +2,8 @@ import { join } from 'node:path';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './modules/auth/auth.module';
+import { CardsModule } from './modules/cards/cards.module';
+import { CulturesModule } from './modules/cultures/cultures.module';
 import { ErasModule } from './modules/eras/eras.module';
 import { HealthModule } from './modules/health/health.module';
 import { MapModule } from './modules/map/map.module';
@@ -22,6 +24,8 @@ import { PrismaModule } from './prisma/prisma.module';
     UsersModule,
     ErasModule,
     MapModule,
+    CulturesModule,
+    CardsModule,
   ],
 })
 export class AppModule {}

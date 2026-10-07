@@ -17,8 +17,11 @@ describe('Auth API (e2e)', () => {
 
   const server = () => app.getHttpServer();
   const uniqueEmail = () => `user${++counter}@example.com`;
+  // Consent is required for every sign-up; tests that check it override the field.
   const register = (body: Record<string, unknown>) =>
-    request(server()).post('/api/auth/register').send(body);
+    request(server())
+      .post('/api/auth/register')
+      .send({ consent: true, ...body });
 
   beforeAll(async () => {
     prisma = createTestPrisma();
@@ -47,8 +50,11 @@ describe('Auth API (e2e)', () => {
         theme: 'SYSTEM',
         locale: 'RU',
       });
+      // The moment of consent is recorded (personal data processing).
+      expect(Date.parse(profile.consentAt ?? '')).toBeGreaterThan(Date.now() - 60_000);
       // Exactly the whitelisted fields: no passwordHash or other internals leak out.
       expect(Object.keys(profile).sort()).toEqual([
+        'consentAt',
         'createdAt',
         'email',
         'id',
@@ -97,6 +103,9 @@ describe('Auth API (e2e)', () => {
       ['empty name', { name: '   ' }],
       ['missing name', { name: undefined }],
       ['extra field "role"', { role: 'ADMIN' }],
+      ['no consent to data processing', { consent: undefined }],
+      ['consent = false', { consent: false }],
+      ['consent as the string "true"', { consent: 'true' }],
     ])('returns 400 for %s', async (_case, override) => {
       const body = { email: uniqueEmail(), password: PASSWORD, name: 'U', ...override };
 
@@ -151,7 +160,9 @@ describe('Auth API (e2e)', () => {
     it('returns the current user when the access cookie is present', async () => {
       const agent = request.agent(server());
       const email = uniqueEmail();
-      await agent.post('/api/auth/register').send({ email, password: PASSWORD, name: 'Me' });
+      await agent
+        .post('/api/auth/register')
+        .send({ email, password: PASSWORD, name: 'Me', consent: true });
 
       const res = await agent.get('/api/auth/me').expect(200);
 
@@ -261,7 +272,7 @@ describe('Auth API (e2e)', () => {
       const agent = request.agent(server());
       await agent
         .post('/api/auth/register')
-        .send({ email: uniqueEmail(), password: PASSWORD, name: 'Jar' })
+        .send({ email: uniqueEmail(), password: PASSWORD, name: 'Jar', consent: true })
         .expect(201);
 
       await agent.post('/api/auth/refresh').expect(200);

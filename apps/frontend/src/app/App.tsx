@@ -1,18 +1,25 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router';
-import { onSessionExpired } from '../api/client.ts';
+import { isApiError, onSessionExpired } from '../api/client.ts';
 import { clearSession } from '../auth/api.ts';
 import { GuestOnly, RequireAuth } from '../auth/route-guards.tsx';
+import { CultureSheet } from '../atlas/CultureSheet.tsx';
 import { AppLayout } from '../components/AppLayout.tsx';
 import { LoginPage, RegisterPage } from '../pages/AuthPages.tsx';
+import { CardPage } from '../pages/CardPage.tsx';
 import { MapPage } from '../pages/MapPage.tsx';
 import { NotFoundPage } from '../pages/NotFoundPage.tsx';
 import { ProfilePage } from '../pages/ProfilePage.tsx';
 
 const queryClient = new QueryClient({
   defaultOptions: {
-    queries: { refetchOnWindowFocus: false },
+    queries: {
+      refetchOnWindowFocus: false,
+      // 4xx answers (404, 400, 403) will not change on retry; only network and 5xx errors do.
+      retry: (failureCount, error) =>
+        !(isApiError(error) && error.status >= 400 && error.status < 500) && failureCount < 3,
+    },
   },
 });
 
@@ -32,7 +39,11 @@ export function App() {
           </Route>
           <Route element={<RequireAuth />}>
             <Route element={<AppLayout />}>
-              <Route index element={<MapPage />} />
+              {/* The culture panel is a drawer over the map, so it is a child route of the map. */}
+              <Route path="/" element={<MapPage />}>
+                <Route path="cultures/:slug" element={<CultureSheet />} />
+              </Route>
+              <Route path="/cards/:slug" element={<CardPage />} />
               <Route path="/profile" element={<ProfilePage />} />
             </Route>
           </Route>

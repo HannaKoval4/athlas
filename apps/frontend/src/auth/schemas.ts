@@ -32,7 +32,13 @@ const existingPassword = z.string().min(1, msg('required'));
 const name = z.string().trim().min(1, msg('required')).max(NAME_MAX_LENGTH, msg('nameTooLong'));
 
 export const loginSchema = z.object({ email, password: existingPassword });
-export const registerSchema = z.object({ name, email, password: newPassword });
+export const registerSchema = z.object({
+  name,
+  email,
+  password: newPassword,
+  // Personal data processing consent: the server rejects anything but true as well.
+  consent: z.boolean().refine((value) => value, msg('consentRequired')),
+});
 export const profileSchema = z.object({
   name,
   email,
