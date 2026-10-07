@@ -19,6 +19,7 @@ import {
   SubmitButton,
   TextInput,
 } from '../components/form.tsx';
+import { ExportNotes } from '../notes/ExportNotes.tsx';
 
 export function ProfilePage() {
   const { t } = useTranslation();
@@ -32,6 +33,13 @@ export function ProfilePage() {
         <h1 className="text-2xl font-bold">{t('profile.title')}</h1>
         <ProfileDetails user={user} />
         <PasswordChange />
+        <section aria-labelledby="notes-export" className="flex flex-col gap-2">
+          <h2 id="notes-export" className="text-xl font-semibold">
+            {t('notes.exportTitle')}
+          </h2>
+          <p className="text-sm text-stone-600">{t('notes.exportHint')}</p>
+          <ExportNotes />
+        </section>
       </div>
     </PageContainer>
   );

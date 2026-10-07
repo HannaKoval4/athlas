@@ -85,6 +85,10 @@ export function TextInput(props: ComponentProps<'input'>) {
   return <input {...props} className={controlClass} />;
 }
 
+export function TextArea(props: ComponentProps<'textarea'>) {
+  return <textarea {...props} className={`${controlClass} min-h-24 resize-y`} />;
+}
+
 export function Select(props: ComponentProps<'select'>) {
   return <select {...props} className={controlClass} />;
 }

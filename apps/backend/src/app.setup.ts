@@ -24,6 +24,8 @@ export function configureApp(app: INestApplication, options: AppSetupOptions): v
     origin: options.frontendOrigin,
     // Auth uses httpOnly cookies, so the browser must be allowed to send them.
     credentials: true,
+    // Lets the frontend read the file name of downloads (notes export).
+    exposedHeaders: ['Content-Disposition'],
   });
 
   app.useGlobalPipes(

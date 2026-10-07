@@ -21,6 +21,7 @@ import {
 } from '../components/ui/sheet.tsx';
 import { Switch } from '../components/ui/switch.tsx';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs.tsx';
+import { NotesPanel } from '../notes/NotesPanel.tsx';
 import { useCardList, useCulture } from './content-api.ts';
 import { CultureGallery } from './CultureGallery.tsx';
 import { CultureGraph } from './CultureGraph.tsx';
@@ -157,6 +158,14 @@ export function CultureSheet() {
                   onTypeChange={(type) => updateParams({ type })}
                 />
               )}
+
+              <div className="border-t pt-4">
+                <NotesPanel
+                  key={data.id}
+                  target={{ cultureId: data.id }}
+                  title={t('notes.cultureNotes')}
+                />
+              </div>
             </div>
           </>
         )}

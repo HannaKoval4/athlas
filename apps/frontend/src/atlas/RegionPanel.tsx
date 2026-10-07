@@ -19,10 +19,7 @@ export function RegionPanel({ year, regions, selected, onSelect }: RegionPanelPr
   const [params] = useSearchParams();
 
   return (
-    <aside
-      aria-labelledby="region-panel-title"
-      className="flex flex-col gap-4 overflow-y-auto border-t border-stone-200 bg-white p-4 md:w-80 md:border-t-0 md:border-l"
-    >
+    <aside aria-labelledby="region-panel-title" className="flex flex-col gap-4 p-4">
       <div>
         <h2 id="region-panel-title" className="text-lg font-semibold">
           {t('map.regionsTitle')}

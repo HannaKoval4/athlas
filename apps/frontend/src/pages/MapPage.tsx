@@ -8,9 +8,12 @@ import { EraYearBar } from '../atlas/EraYearBar.tsx';
 import { RegionPanel } from '../atlas/RegionPanel.tsx';
 import { useSelection } from '../atlas/selection.ts';
 import { LoadingScreen } from '../components/LoadingScreen.tsx';
+import { useNotes } from '../notes/api.ts';
+import { RecentNotes } from '../notes/RecentNotes.tsx';
 
 /**
- * Main screen: era/year tab on top, the map with the time slice, the region panel on the side.
+ * Main screen: era/year tab on top, the map with the time slice, the region panel and the
+ * latest notes on the side.
  * Also the parent of /cultures/:slug, so the map stays mounted under the culture drawer.
  */
 export function MapPage() {
@@ -18,6 +21,7 @@ export function MapPage() {
   const eras = useEras();
   const { selection, selectEra, selectYear } = useSelection(eras.data);
   const slice = useMapSlice(selection && { era: selection.era.slug, year: selection.year });
+  const notes = useNotes({});
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   if (eras.isError || slice.isError) {
@@ -36,7 +40,8 @@ export function MapPage() {
   }
 
   // F-02: only while the first real requests are in flight; later years keep the old map visible.
-  if (!selection || !slice.data) {
+  // A failed notes request does not block the map: the notes block shows its own state.
+  if (!selection || !slice.data || notes.isPending) {
     return <LoadingScreen label={t('map.loading')} fill="parent" />;
   }
 
@@ -83,12 +88,23 @@ export function MapPage() {
             )}
           </div>
         </div>
-        <RegionPanel
-          year={slice.data.year}
-          regions={regions}
-          selected={selected}
-          onSelect={(region) => setSelectedId(region?.id ?? null)}
-        />
+        <div className="flex flex-col overflow-y-auto border-t border-stone-200 bg-white md:w-80 md:border-t-0 md:border-l">
+          <RegionPanel
+            year={slice.data.year}
+            regions={regions}
+            selected={selected}
+            onSelect={(region) => setSelectedId(region?.id ?? null)}
+          />
+          <div className="border-t border-stone-200 p-4">
+            {notes.isError ? (
+              <p role="alert" className="text-sm">
+                {t('notes.loadError')}
+              </p>
+            ) : (
+              <RecentNotes notes={notes.data ?? []} />
+            )}
+          </div>
+        </div>
       </div>
       {/* /cultures/:slug renders the culture drawer here, on top of the map. */}
       <Outlet />

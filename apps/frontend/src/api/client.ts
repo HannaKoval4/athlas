@@ -81,8 +81,8 @@ async function toApiError(response: Response): Promise<ApiError> {
   return new ApiError(response.status, message);
 }
 
-/** JSON request to the API with transparent access-token renewal on 401. */
-export async function apiRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
+/** Sends the request; on 401 renews the access token once and repeats it. Throws on errors. */
+async function sendWithRefresh(path: string, options: RequestOptions): Promise<Response> {
   let response = await send(path, options);
 
   if (response.status === 401 && !NO_REFRESH_PATHS.has(path)) {
@@ -96,8 +96,30 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
   if (!response.ok) {
     throw await toApiError(response);
   }
+  return response;
+}
+
+/** JSON request to the API with transparent access-token renewal on 401. */
+export async function apiRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
+  const response = await sendWithRefresh(path, options);
   if (response.status === 204) {
     return undefined as T;
   }
   return (await response.json()) as T;
+}
+
+export interface DownloadedFile {
+  blob: Blob;
+  fileName: string;
+}
+
+/**
+ * A file from the API (e.g. the notes export). Downloaded with fetch, not a plain link, so an
+ * expired access token is renewed like for any other request.
+ */
+export async function apiDownload(path: string, fallbackName: string): Promise<DownloadedFile> {
+  const response = await sendWithRefresh(path, {});
+  const disposition = response.headers.get('Content-Disposition') ?? '';
+  const fileName = /filename="([^"]+)"/.exec(disposition)?.[1] ?? fallbackName;
+  return { blob: await response.blob(), fileName };
 }

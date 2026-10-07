@@ -7,6 +7,7 @@ import { CulturesModule } from './modules/cultures/cultures.module';
 import { ErasModule } from './modules/eras/eras.module';
 import { HealthModule } from './modules/health/health.module';
 import { MapModule } from './modules/map/map.module';
+import { NotesModule } from './modules/notes/notes.module';
 import { UsersModule } from './modules/users/users.module';
 import { PrismaModule } from './prisma/prisma.module';
 
@@ -26,6 +27,7 @@ import { PrismaModule } from './prisma/prisma.module';
     MapModule,
     CulturesModule,
     CardsModule,
+    NotesModule,
   ],
 })
 export class AppModule {}

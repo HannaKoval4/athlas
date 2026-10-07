@@ -9,8 +9,12 @@ import { CreditText } from '../atlas/CreditText.tsx';
 import { PageContainer } from '../components/AppLayout.tsx';
 import { Badge } from '../components/ui/badge.tsx';
 import { Button } from '../components/ui/button.tsx';
+import { NotesPanel } from '../notes/NotesPanel.tsx';
 
-/** /cards/:slug — the card with its period, sources and links in both directions (F-05, F-06). */
+/**
+ * /cards/:slug — the card with its period, sources and links in both directions (F-05, F-06)
+ * and the user's notes on it in a side column (F-07).
+ */
 export function CardPage() {
   const { t } = useTranslation();
   const { slug = '' } = useParams();
@@ -18,25 +22,37 @@ export function CardPage() {
 
   return (
     <PageContainer>
-      <article className="mx-auto flex max-w-3xl flex-col gap-6" data-testid="card-page">
-        <BackButton />
-        {card.isPending ? (
-          <p role="status">{t('app.loading')}</p>
-        ) : card.isError ? (
-          <div role="alert" className="flex flex-col gap-2">
-            <h1 className="text-2xl font-bold">
-              {isApiError(card.error) && card.error.status === 404
-                ? t('card.notFound')
-                : t('card.loadError')}
-            </h1>
-            <Link to="/" className="underline">
-              {t('card.toMap')}
-            </Link>
-          </div>
-        ) : (
-          <CardBody card={card.data} />
+      <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_20rem]">
+        <article className="flex min-w-0 flex-col gap-6" data-testid="card-page">
+          <BackButton />
+          {card.isPending ? (
+            <p role="status">{t('app.loading')}</p>
+          ) : card.isError ? (
+            <div role="alert" className="flex flex-col gap-2">
+              <h1 className="text-2xl font-bold">
+                {isApiError(card.error) && card.error.status === 404
+                  ? t('card.notFound')
+                  : t('card.loadError')}
+              </h1>
+              <Link to="/" className="underline">
+                {t('card.toMap')}
+              </Link>
+            </div>
+          ) : (
+            <CardBody card={card.data} />
+          )}
+        </article>
+        {card.data && (
+          <aside className="self-start lg:sticky lg:top-4">
+            {/* key: a new card starts with a closed form. */}
+            <NotesPanel
+              key={card.data.id}
+              target={{ cardId: card.data.id }}
+              title={t('notes.cardNotes')}
+            />
+          </aside>
         )}
-      </article>
+      </div>
     </PageContainer>
   );
 }
@@ -124,7 +140,7 @@ function CardBody({ card }: { card: CardDetails }) {
       )}
 
       {/* react-markdown never renders raw HTML, so admin-entered content cannot inject scripts. */}
-      <div className="flex flex-col gap-3 leading-relaxed" data-testid="card-content">
+      <div className="markdown gap-3 leading-relaxed" data-testid="card-content">
         <Markdown>{card.content}</Markdown>
       </div>
 

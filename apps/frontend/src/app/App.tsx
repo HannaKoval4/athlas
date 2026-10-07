@@ -9,6 +9,7 @@ import { AppLayout } from '../components/AppLayout.tsx';
 import { LoginPage, RegisterPage } from '../pages/AuthPages.tsx';
 import { CardPage } from '../pages/CardPage.tsx';
 import { MapPage } from '../pages/MapPage.tsx';
+import { NotesPage } from '../pages/NotesPage.tsx';
 import { NotFoundPage } from '../pages/NotFoundPage.tsx';
 import { ProfilePage } from '../pages/ProfilePage.tsx';
 
@@ -44,6 +45,7 @@ export function App() {
                 <Route path="cultures/:slug" element={<CultureSheet />} />
               </Route>
               <Route path="/cards/:slug" element={<CardPage />} />
+              <Route path="/notes" element={<NotesPage />} />
               <Route path="/profile" element={<ProfilePage />} />
             </Route>
           </Route>
