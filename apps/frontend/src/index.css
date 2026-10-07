@@ -1,0 +1,11 @@
+@import 'tailwindcss';
+
+/* Dark theme (class "dark" on <html>) is added in module 11 together with the theme switch. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  html {
+    font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+    color-scheme: light;
+  }
+}

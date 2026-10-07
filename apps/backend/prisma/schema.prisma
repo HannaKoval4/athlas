@@ -1,0 +1,390 @@
+// Atlas data model. CHECK constraints and the full-text search column are added
+// by hand in the migration SQL (Prisma cannot describe them) — see prisma/migrations.
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+// The connection URL lives in prisma.config.ts (Prisma 7).
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum ThemePreference {
+  LIGHT
+  DARK
+  SYSTEM
+}
+
+enum Locale {
+  RU
+  EN
+}
+
+enum CardType {
+  MYTHOLOGY
+  EVENT
+  TRADITION
+  FACT
+  ARTWORK
+  PERSON
+  ARTIFACT
+}
+
+enum RelationType {
+  RELATED
+  PART_OF
+  DEPICTS
+  CREATED_BY
+  CELEBRATES
+  MENTIONS
+}
+
+enum HolidayDateType {
+  EXACT
+  SEASON
+  MOVABLE
+  APPROXIMATE
+}
+
+enum Season {
+  SPRING
+  SUMMER
+  AUTUMN
+  WINTER
+}
+
+enum SourceType {
+  BOOK
+  ARTICLE
+  ENCYCLOPEDIA
+  MUSEUM
+  WEBSITE
+}
+
+model User {
+  id            String            @id @default(uuid())
+  /// Always stored in lower case (BR-01, enforced by CHECK user_email_lower_chk)
+  email         String            @unique
+  passwordHash  String
+  name          String
+  role          Role              @default(USER)
+  theme         ThemePreference   @default(SYSTEM)
+  locale        Locale            @default(RU)
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  refreshTokens RefreshToken[]
+  notes         Note[]
+  views         ViewHistory[]
+  attempts      QuizAttempt[]
+  achievements  UserAchievement[]
+}
+
+model RefreshToken {
+  id        String    @id @default(uuid())
+  userId    String
+  tokenHash String
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+/// Global epochs for the epoch/year selector and quizzes. Bounds are conventional.
+model Era {
+  id          String  @id @default(uuid())
+  slug        String  @unique
+  name        String
+  description String?
+  /// Negative = BCE, no year 0 (DM-01)
+  startYear   Int
+  endYear     Int
+  sortOrder   Int     @default(0)
+  quizzes     Quiz[]
+}
+
+model Culture {
+  id              String          @id @default(uuid())
+  slug            String          @unique
+  name            String
+  description     String
+  startYear       Int
+  endYear         Int
+  dateApproximate Boolean         @default(false)
+  /// HEX colour used to highlight the culture's regions on the map
+  color           String
+  regions         CultureRegion[]
+  cards           Card[]
+  holidays        Holiday[]
+  quizzes         Quiz[]
+  notes           Note[]
+}
+
+model Region {
+  id        String          @id @default(uuid())
+  slug      String          @unique
+  name      String
+  /// Simplified GeoJSON geometry (Polygon / MultiPolygon); borders are conventional (DM-10)
+  geojson   Json
+  centerLat Float
+  centerLng Float
+  cultures  CultureRegion[]
+}
+
+/// Which culture occupied which region during which period (time-slice of the map).
+model CultureRegion {
+  id              String  @id @default(uuid())
+  cultureId       String
+  regionId        String
+  startYear       Int
+  endYear         Int
+  dateApproximate Boolean @default(false)
+  culture         Culture @relation(fields: [cultureId], references: [id], onDelete: Cascade)
+  region          Region  @relation(fields: [regionId], references: [id], onDelete: Cascade)
+
+  @@unique([cultureId, regionId, startYear])
+  @@index([startYear, endYear])
+}
+
+model Card {
+  id              String                   @id @default(uuid())
+  slug            String                   @unique
+  type            CardType
+  title           String
+  summary         String
+  /// Markdown
+  content         String
+  cultureId       String
+  startYear       Int
+  endYear         Int
+  /// Calendar day of a dated event, used by "Today in history" (both or neither)
+  month           Int?
+  day             Int?
+  dateApproximate Boolean                  @default(false)
+  imageUrl        String?
+  imageCredit     String?
+  published       Boolean                  @default(false)
+  publishedAt     DateTime?
+  createdAt       DateTime                 @default(now())
+  updatedAt       DateTime                 @updatedAt
+  /// Generated column (title A, summary B, content C; 'russian' config) — defined in migration SQL,
+  /// queried with $queryRaw only. The dbgenerated() text mirrors `prisma db pull` output so that
+  /// `migrate dev` sees no drift; it must stay in sync with the migration.
+  searchVector    Unsupported("tsvector")? @default(dbgenerated("((setweight(to_tsvector('russian'::regconfig, COALESCE(title, ''::text)), 'A'::\"char\") || setweight(to_tsvector('russian'::regconfig, COALESCE(summary, ''::text)), 'B'::\"char\")) || setweight(to_tsvector('russian'::regconfig, COALESCE(content, ''::text)), 'C'::\"char\"))")) @map("search_vector")
+  culture         Culture                  @relation(fields: [cultureId], references: [id], onDelete: Restrict)
+  linksFrom       CardLink[]               @relation("LinkFrom")
+  linksTo         CardLink[]               @relation("LinkTo")
+  sources         CardSource[]
+  notes           Note[]
+  views           ViewHistory[]
+  questions       Question[]
+  holidays        Holiday[]
+
+  @@index([cultureId, type])
+  @@index([startYear, endYear])
+  @@index([published, publishedAt])
+  @@index([month, day])
+  @@index([searchVector], type: Gin, map: "card_search_idx")
+}
+
+/// Directed link between cards; the UI shows it from both sides (DM-06).
+model CardLink {
+  fromCardId   String
+  toCardId     String
+  relationType RelationType
+  from         Card         @relation("LinkFrom", fields: [fromCardId], references: [id], onDelete: Cascade)
+  to           Card         @relation("LinkTo", fields: [toCardId], references: [id], onDelete: Cascade)
+
+  @@id([fromCardId, toCardId, relationType])
+  @@index([toCardId])
+}
+
+model Source {
+  id         String       @id @default(uuid())
+  /// Stable key for idempotent seeding and admin references
+  slug       String       @unique
+  type       SourceType
+  title      String
+  author     String?
+  publisher  String?
+  year       Int?
+  url        String?
+  accessedAt DateTime?
+  cards      CardSource[]
+  holidays   Holiday[]
+}
+
+model CardSource {
+  cardId   String
+  sourceId String
+  pages    String?
+  card     Card    @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  source   Source  @relation(fields: [sourceId], references: [id], onDelete: Restrict)
+
+  @@id([cardId, sourceId])
+  @@index([sourceId])
+}
+
+model Holiday {
+  id          String          @id @default(uuid())
+  slug        String          @unique
+  cultureId   String
+  name        String
+  description String
+  dateType    HolidayDateType
+  /// Required for EXACT (CHECK holiday_exact_chk)
+  month       Int?
+  day         Int?
+  /// Required for SEASON (CHECK holiday_season_chk)
+  season      Season?
+  /// Explains why the date is movable / approximate
+  dateNote    String?
+  cardId      String?
+  sourceId    String?
+  culture     Culture         @relation(fields: [cultureId], references: [id], onDelete: Cascade)
+  card        Card?           @relation(fields: [cardId], references: [id], onDelete: SetNull)
+  source      Source?         @relation(fields: [sourceId], references: [id], onDelete: SetNull)
+
+  @@index([month, day])
+  @@index([cultureId])
+}
+
+/// Private user note attached to a card and/or a culture (CHECK note_target_chk).
+model Note {
+  id        String   @id @default(uuid())
+  userId    String
+  title     String?
+  content   String
+  cardId    String?
+  cultureId String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  card      Card?    @relation(fields: [cardId], references: [id], onDelete: SetNull)
+  culture   Culture? @relation(fields: [cultureId], references: [id], onDelete: SetNull)
+
+  @@index([userId, cardId])
+  @@index([userId, cultureId])
+}
+
+/// One row per (user, card); viewedAt is bumped on every view (BR-20).
+model ViewHistory {
+  userId   String
+  cardId   String
+  viewedAt DateTime @default(now())
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  card     Card     @relation(fields: [cardId], references: [id], onDelete: Cascade)
+
+  @@id([userId, cardId])
+  @@index([userId, viewedAt])
+}
+
+model Quiz {
+  id                  String        @id @default(uuid())
+  eraId               String
+  cultureId           String
+  title               String
+  questionsPerAttempt Int           @default(10)
+  passPercent         Int           @default(70)
+  era                 Era           @relation(fields: [eraId], references: [id], onDelete: Cascade)
+  culture             Culture       @relation(fields: [cultureId], references: [id], onDelete: Cascade)
+  questions           Question[]
+  attempts            QuizAttempt[]
+  achievements        Achievement[]
+
+  @@unique([eraId, cultureId])
+}
+
+model Question {
+  id          String          @id @default(uuid())
+  quizId      String
+  text        String
+  explanation String
+  multiple    Boolean         @default(false)
+  /// Card to revisit after a wrong answer
+  cardId      String?
+  quiz        Quiz            @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  card        Card?           @relation(fields: [cardId], references: [id], onDelete: SetNull)
+  options     AnswerOption[]
+  answers     AttemptAnswer[]
+
+  @@index([quizId])
+}
+
+model AnswerOption {
+  id         String   @id @default(uuid())
+  questionId String
+  text       String
+  isCorrect  Boolean
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@index([questionId])
+}
+
+model QuizAttempt {
+  id          String          @id @default(uuid())
+  userId      String
+  quizId      String
+  /// Order of the questions issued in this attempt
+  questionIds String[]
+  startedAt   DateTime        @default(now())
+  finishedAt  DateTime?
+  score       Int?
+  total       Int
+  passed      Boolean?
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quiz        Quiz            @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  answers     AttemptAnswer[]
+
+  @@index([userId, quizId])
+}
+
+model AttemptAnswer {
+  id                String      @id @default(uuid())
+  attemptId         String
+  questionId        String
+  selectedOptionIds String[]
+  isCorrect         Boolean
+  attempt           QuizAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  question          Question    @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([attemptId, questionId])
+}
+
+model Achievement {
+  id             String            @id @default(uuid())
+  code           String            @unique
+  /// i18n key
+  titleKey       String
+  descriptionKey String
+  quizId         String?
+  quiz           Quiz?             @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  users          UserAchievement[]
+}
+
+model UserAchievement {
+  userId        String
+  achievementId String
+  earnedAt      DateTime    @default(now())
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievement   Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+
+  @@id([userId, achievementId])
+}
+
+/// Cached Open Library responses (BR-16)
+model BookCache {
+  id        String   @id @default(uuid())
+  queryKey  String   @unique
+  payload   Json
+  fetchedAt DateTime @default(now())
+}

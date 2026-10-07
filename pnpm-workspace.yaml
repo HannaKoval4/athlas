@@ -1,0 +1,19 @@
+packages:
+  - apps/*
+  - packages/*
+
+# pnpm blocks dependency install scripts by default; decisions are explicit here.
+# true:  prisma/@prisma/engines download the schema engine (needed for migrations);
+#        esbuild verifies its platform binary (used by tsx).
+# false: the package ships prebuilt binaries (argon2 has win32-x64 prebuilds) or the script is telemetry.
+allowBuilds:
+  '@parcel/watcher': false
+  '@prisma/engines': true
+  '@scarf/scarf': false
+  argon2: false
+  esbuild: true
+  prisma: true
+  unrs-resolver: false
+
+# Refuse to install on a Node version below "engines" (Jest needs Node >= 24.9 for require(esm)).
+engineStrict: true

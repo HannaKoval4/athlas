@@ -1,0 +1,146 @@
+[
+  {
+    "slug": "britannica-ancient-egypt",
+    "type": "ENCYCLOPEDIA",
+    "title": "Ancient Egypt",
+    "publisher": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/place/ancient-Egypt",
+    "verify": "Проверить, что URL открывается."
+  },
+  {
+    "slug": "britannica-ancient-greece",
+    "type": "ENCYCLOPEDIA",
+    "title": "Ancient Greek civilization",
+    "publisher": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/place/ancient-Greece",
+    "verify": "Проверить, что URL открывается и точное название статьи."
+  },
+  {
+    "slug": "shaw-oxford-history-of-ancient-egypt",
+    "type": "BOOK",
+    "title": "The Oxford History of Ancient Egypt",
+    "author": "Shaw I. (ed.)",
+    "publisher": "Oxford University Press",
+    "year": 2000
+  },
+  {
+    "slug": "wilkinson-gods-and-goddesses",
+    "type": "BOOK",
+    "title": "The Complete Gods and Goddesses of Ancient Egypt",
+    "author": "Wilkinson R. H.",
+    "publisher": "Thames & Hudson",
+    "year": 2003
+  },
+  {
+    "slug": "mathieu-egyptian-myths",
+    "type": "BOOK",
+    "title": "Древнеегипетские мифы",
+    "author": "Матье М. Э.",
+    "publisher": "Издательство АН СССР",
+    "year": 1956,
+    "verify": "Проверить издательство и год издания."
+  },
+  {
+    "slug": "plutarch-isis-and-osiris",
+    "type": "BOOK",
+    "title": "Об Исиде и Осирисе",
+    "author": "Плутарх"
+  },
+  {
+    "slug": "herodotus-histories",
+    "type": "BOOK",
+    "title": "История",
+    "author": "Геродот"
+  },
+  {
+    "slug": "carter-tomb-of-tutankhamen",
+    "type": "BOOK",
+    "title": "The Tomb of Tut.ankh.Amen. Vol. 1",
+    "author": "Carter H., Mace A. C.",
+    "publisher": "Cassell",
+    "year": 1923
+  },
+  {
+    "slug": "british-museum-rosetta-stone",
+    "type": "MUSEUM",
+    "title": "Rosetta Stone (EA 24)",
+    "publisher": "British Museum",
+    "url": "https://www.britishmuseum.org/collection/object/Y_EA24",
+    "verify": "Проверить, что URL карточки музейного предмета открывается."
+  },
+  {
+    "slug": "berlin-egyptian-museum-nefertiti",
+    "type": "MUSEUM",
+    "title": "Bust of Nefertiti",
+    "publisher": "Staatliche Museen zu Berlin, Ägyptisches Museum und Papyrussammlung (Neues Museum)"
+  },
+  {
+    "slug": "dyakonov-history-of-ancient-world",
+    "type": "BOOK",
+    "title": "История Древнего мира",
+    "author": "Под ред. И. М. Дьяконова, В. Д. Нероновой, И. С. Свенцицкой",
+    "publisher": "Наука",
+    "year": 1989,
+    "verify": "Проверить год и номер издания (выходило несколько изданий)."
+  },
+  {
+    "slug": "cartledge-cambridge-history-of-greece",
+    "type": "BOOK",
+    "title": "The Cambridge Illustrated History of Ancient Greece",
+    "author": "Cartledge P. (ed.)",
+    "publisher": "Cambridge University Press",
+    "year": 1998
+  },
+  {
+    "slug": "burkert-greek-religion",
+    "type": "BOOK",
+    "title": "Greek Religion",
+    "author": "Burkert W.",
+    "publisher": "Harvard University Press",
+    "year": 1985
+  },
+  {
+    "slug": "hesiod-theogony",
+    "type": "BOOK",
+    "title": "Теогония",
+    "author": "Гесиод"
+  },
+  {
+    "slug": "homer-iliad",
+    "type": "BOOK",
+    "title": "Илиада",
+    "author": "Гомер"
+  },
+  {
+    "slug": "thucydides-history",
+    "type": "BOOK",
+    "title": "История Пелопоннесской войны",
+    "author": "Фукидид"
+  },
+  {
+    "slug": "plato-apology",
+    "type": "BOOK",
+    "title": "Апология Сократа",
+    "author": "Платон"
+  },
+  {
+    "slug": "louvre-venus-de-milo",
+    "type": "MUSEUM",
+    "title": "Aphrodite, known as the Venus de Milo",
+    "publisher": "Musée du Louvre"
+  },
+  {
+    "slug": "national-archaeological-museum-athens",
+    "type": "MUSEUM",
+    "title": "Коллекция Национального археологического музея Афин",
+    "publisher": "National Archaeological Museum, Athens"
+  },
+  {
+    "slug": "freeth-antikythera-2006",
+    "type": "ARTICLE",
+    "title": "Decoding the ancient Greek astronomical calculator known as the Antikythera Mechanism",
+    "author": "Freeth T. et al.",
+    "publisher": "Nature, vol. 444",
+    "year": 2006
+  }
+]
