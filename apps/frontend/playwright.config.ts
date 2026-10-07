@@ -6,7 +6,10 @@ export default defineConfig({
   testDir: './e2e',
   fullyParallel: true,
   forbidOnly: isCi,
-  retries: isCi ? 2 : 0,
+  // Locally the Vite dev server serves hundreds of unbundled modules to parallel browsers and
+  // sometimes aborts a module request, so the page never boots (seen in traces as status -1).
+  // One retry absorbs that; such tests are still reported as "flaky", not hidden.
+  retries: isCi ? 2 : 1,
   reporter: isCi ? 'github' : [['list'], ['html', { open: 'never' }]],
   use: {
     baseURL: 'http://localhost:5173',

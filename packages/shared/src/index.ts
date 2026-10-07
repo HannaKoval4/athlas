@@ -4,3 +4,5 @@ export * from './constants.js';
 export * from './enums.js';
 export * from './year.js';
 export * from './notes.js';
+export * from './search.js';
+export * from './calendar.js';

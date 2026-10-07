@@ -7,11 +7,13 @@ import { GuestOnly, RequireAuth } from '../auth/route-guards.tsx';
 import { CultureSheet } from '../atlas/CultureSheet.tsx';
 import { AppLayout } from '../components/AppLayout.tsx';
 import { LoginPage, RegisterPage } from '../pages/AuthPages.tsx';
+import { CalendarPage } from '../pages/CalendarPage.tsx';
 import { CardPage } from '../pages/CardPage.tsx';
 import { MapPage } from '../pages/MapPage.tsx';
 import { NotesPage } from '../pages/NotesPage.tsx';
 import { NotFoundPage } from '../pages/NotFoundPage.tsx';
 import { ProfilePage } from '../pages/ProfilePage.tsx';
+import { SearchPage } from '../pages/SearchPage.tsx';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -45,6 +47,8 @@ export function App() {
                 <Route path="cultures/:slug" element={<CultureSheet />} />
               </Route>
               <Route path="/cards/:slug" element={<CardPage />} />
+              <Route path="/calendar" element={<CalendarPage />} />
+              <Route path="/search" element={<SearchPage />} />
               <Route path="/notes" element={<NotesPage />} />
               <Route path="/profile" element={<ProfilePage />} />
             </Route>

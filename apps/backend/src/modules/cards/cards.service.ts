@@ -5,10 +5,10 @@ import { cardsInYear, cardsOverlapping, visibleCards } from './card-visibility';
 import type { CardDetailsDto, CardLinkRefDto, CardPageDto } from './dto/card.dto';
 import type { CardsQueryDto } from './dto/cards-query.dto';
 
-const cultureRefSelect = { id: true, slug: true, name: true, color: true } as const;
+export const cultureRefSelect = { id: true, slug: true, name: true, color: true } as const;
 
 /** Columns of a card in lists; content and relations are loaded only for the card page. */
-const cardListSelect = {
+export const cardListSelect = {
   id: true,
   slug: true,
   type: true,

@@ -1,5 +1,5 @@
 import type { PrismaClient } from '../../src/generated/prisma/client';
-import { CardType, SourceType } from '../../src/generated/prisma/enums';
+import { CardType, HolidayDateType, Season, SourceType } from '../../src/generated/prisma/enums';
 
 let sequence = 0;
 /** Unique, readable suffix so factories can be called repeatedly within one test file. */
@@ -10,14 +10,14 @@ function next(prefix: string): string {
 
 export async function createCulture(
   prisma: PrismaClient,
-  overrides: { startYear?: number; endYear?: number } = {},
+  overrides: { startYear?: number; endYear?: number; name?: string; description?: string } = {},
 ) {
   const slug = next('culture');
   return prisma.culture.create({
     data: {
       slug,
-      name: `Culture ${slug}`,
-      description: 'Test culture',
+      name: overrides.name ?? `Culture ${slug}`,
+      description: overrides.description ?? 'Test culture',
       startYear: overrides.startYear ?? -1000,
       endYear: overrides.endYear ?? -100,
       color: '#123456',
@@ -35,6 +35,9 @@ export async function createCard(
     type: CardType;
     startYear: number;
     endYear: number;
+    month: number;
+    day: number;
+    dateApproximate: boolean;
     published: boolean;
   }> = {},
 ) {
@@ -49,6 +52,9 @@ export async function createCard(
       cultureId,
       startYear: overrides.startYear ?? -500,
       endYear: overrides.endYear ?? -400,
+      month: overrides.month,
+      day: overrides.day,
+      dateApproximate: overrides.dateApproximate,
       published: overrides.published ?? true,
     },
   });
@@ -120,6 +126,36 @@ export async function placeCulture(
       startYear: period.startYear,
       endYear: period.endYear,
       dateApproximate: period.dateApproximate ?? false,
+    },
+  });
+}
+
+export async function createHoliday(
+  prisma: PrismaClient,
+  cultureId: string,
+  data: {
+    name: string;
+    description: string;
+    cardId?: string;
+    dateType?: HolidayDateType;
+    month?: number;
+    day?: number;
+    season?: Season;
+  },
+) {
+  const dateType = data.dateType ?? HolidayDateType.MOVABLE;
+  return prisma.holiday.create({
+    data: {
+      slug: next('holiday'),
+      cultureId,
+      name: data.name,
+      description: data.description,
+      dateType,
+      month: data.month,
+      day: data.day,
+      season: data.season,
+      dateNote: dateType === HolidayDateType.EXACT ? null : 'Lunar calendar',
+      cardId: data.cardId,
     },
   });
 }

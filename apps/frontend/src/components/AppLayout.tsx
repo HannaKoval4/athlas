@@ -28,6 +28,12 @@ export function AppLayout() {
             <NavLink to="/" end className={navLinkClass}>
               {t('nav.map')}
             </NavLink>
+            <NavLink to="/calendar" className={navLinkClass}>
+              {t('nav.calendar')}
+            </NavLink>
+            <NavLink to="/search" className={navLinkClass}>
+              {t('nav.search')}
+            </NavLink>
             <NavLink to="/notes" className={navLinkClass}>
               {t('nav.notes')}
             </NavLink>

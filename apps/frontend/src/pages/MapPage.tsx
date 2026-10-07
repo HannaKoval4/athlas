@@ -7,13 +7,15 @@ import { AtlasMap } from '../atlas/AtlasMap.tsx';
 import { EraYearBar } from '../atlas/EraYearBar.tsx';
 import { RegionPanel } from '../atlas/RegionPanel.tsx';
 import { useSelection } from '../atlas/selection.ts';
+import { useTodayInHistory } from '../calendar/api.ts';
+import { TodayInHistory } from '../calendar/TodayInHistory.tsx';
 import { LoadingScreen } from '../components/LoadingScreen.tsx';
 import { useNotes } from '../notes/api.ts';
 import { RecentNotes } from '../notes/RecentNotes.tsx';
 
 /**
- * Main screen: era/year tab on top, the map with the time slice, the region panel and the
- * latest notes on the side.
+ * Main screen: era/year tab on top, the map with the time slice; on the side the region
+ * panel, the latest notes and "Today in history".
  * Also the parent of /cultures/:slug, so the map stays mounted under the culture drawer.
  */
 export function MapPage() {
@@ -22,6 +24,7 @@ export function MapPage() {
   const { selection, selectEra, selectYear } = useSelection(eras.data);
   const slice = useMapSlice(selection && { era: selection.era.slug, year: selection.year });
   const notes = useNotes({});
+  const today = useTodayInHistory();
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   if (eras.isError || slice.isError) {
@@ -40,8 +43,8 @@ export function MapPage() {
   }
 
   // F-02: only while the first real requests are in flight; later years keep the old map visible.
-  // A failed notes request does not block the map: the notes block shows its own state.
-  if (!selection || !slice.data || notes.isPending) {
+  // Failed notes or "Today" requests do not block the map: each block shows its own state.
+  if (!selection || !slice.data || notes.isPending || today.isPending) {
     return <LoadingScreen label={t('map.loading')} fill="parent" />;
   }
 
@@ -102,6 +105,15 @@ export function MapPage() {
               </p>
             ) : (
               <RecentNotes notes={notes.data ?? []} />
+            )}
+          </div>
+          <div className="border-t border-stone-200 p-4">
+            {today.isError ? (
+              <p role="alert" className="text-sm">
+                {t('today.loadError')}
+              </p>
+            ) : (
+              today.data && <TodayInHistory data={today.data} compact />
             )}
           </div>
         </div>
