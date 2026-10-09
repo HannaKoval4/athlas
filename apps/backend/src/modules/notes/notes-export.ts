@@ -5,7 +5,7 @@ import PDFDocument from 'pdfkit';
 /** Headings of the exported file; note texts themselves are exported as written. */
 const LABELS = {
   ru: {
-    title: 'Мои заметки — Интерактивный атлас',
+    title: 'Мои заметки – Интерактивный атлас',
     exported: 'Экспортировано',
     count: 'Заметок',
     empty: 'Заметок пока нет.',
@@ -16,7 +16,7 @@ const LABELS = {
     noCulture: 'Без культуры',
   },
   en: {
-    title: 'My notes — Interactive atlas',
+    title: 'My notes – Interactive atlas',
     exported: 'Exported',
     count: 'Notes',
     empty: 'No notes yet.',

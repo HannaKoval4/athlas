@@ -8,3 +8,4 @@ export * from './search.js';
 export * from './calendar.js';
 export * from './discover.js';
 export * from './quizzes.js';
+export * from './books.js';

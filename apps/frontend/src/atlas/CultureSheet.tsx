@@ -10,6 +10,7 @@ import { useId } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router';
 import { isApiError } from '../api/client.ts';
+import { BooksBlock } from '../books/BooksBlock.tsx';
 import { Badge } from '../components/ui/badge.tsx';
 import { Button } from '../components/ui/button.tsx';
 import {
@@ -35,7 +36,7 @@ function isCardType(value: string | null): value is CardType {
 }
 
 /**
- * /cultures/:slug — drawer over the map (F-05). The map keeps ?era=&year=; the panel adds
+ * /cultures/:slug – drawer over the map (F-05). The map keeps ?era=&year=; the panel adds
  * ?all=1 (all cards instead of the selected year) and ?type= (active tab), so the view
  * survives a reload and the Back button.
  */
@@ -163,6 +164,8 @@ export function CultureSheet() {
                   onTypeChange={(type) => updateParams({ type })}
                 />
               )}
+
+              <BooksBlock query={{ cultureId: data.id }} />
 
               <div className="border-t pt-4">
                 <CultureQuizzes cultureId={data.id} eraSlug={params.get('era')} />

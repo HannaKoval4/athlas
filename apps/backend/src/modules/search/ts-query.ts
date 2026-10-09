@@ -5,7 +5,7 @@ const MAX_TERMS = 8;
 
 /**
  * Words of the user's query: letters and digits only, lower case. Anything else is dropped,
- * so the input can never inject tsquery syntax (&, |, !, parentheses, quotes) — to_tsquery
+ * so the input can never inject tsquery syntax (&, |, !, parentheses, quotes) – to_tsquery
  * rejects such input with an error. One-letter words (mostly conjunctions) are skipped
  * unless the query has nothing else.
  */

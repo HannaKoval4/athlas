@@ -266,6 +266,23 @@ describe('validateSeedData', () => {
   });
 });
 
+describe('Open Library queries (BR-16)', () => {
+  it('accepts an English phrase', () => {
+    const data = validData();
+    data.cultures[0].booksQuery = 'Ancient Egypt';
+    data.cultures[0].cards[0].booksQuery = "Hatshepsut's temple";
+    expect(validateSeedData(data)).toEqual([]);
+  });
+
+  it('rejects a Cyrillic phrase (the catalogue is searched in English)', () => {
+    const data = validData();
+    data.cultures[0].cards[0].booksQuery = 'Парфенон';
+    expect(validateSeedData(data)).toContain(
+      'card "card-0": booksQuery must be 2-100 Latin letters, digits or spaces',
+    );
+  });
+});
+
 describe('quizzes (DM-08, BR-09, BR-10)', () => {
   it('requires a pool of at least 15 questions', () => {
     const data = validData();

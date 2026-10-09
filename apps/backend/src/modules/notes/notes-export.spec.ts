@@ -32,7 +32,7 @@ describe('renderMarkdown', () => {
 
     expect(md).toBe(
       [
-        '# Мои заметки — Интерактивный атлас',
+        '# Мои заметки – Интерактивный атлас',
         '',
         'Экспортировано: 2026-10-07 · Заметок: 2',
         '',
@@ -68,7 +68,7 @@ describe('renderMarkdown', () => {
   it('uses English headings for lang=en; note texts stay as written', () => {
     const md = renderMarkdown(groupNotes(notes), { lang: 'en', exportedAt });
 
-    expect(md).toContain('# My notes — Interactive atlas');
+    expect(md).toContain('# My notes – Interactive atlas');
     expect(md).toContain('### Card: Парфенон');
     expect(md).toContain('#### Untitled');
   });

@@ -12,7 +12,7 @@ import { TokenService } from '../token.service';
 
 /**
  * Global guard: every route requires a valid access token unless marked @Public().
- * "Secure by default" — a new endpoint cannot be left unprotected by forgetting a decorator.
+ * "Secure by default" – a new endpoint cannot be left unprotected by forgetting a decorator.
  */
 @Injectable()
 export class JwtAuthGuard implements CanActivate {

@@ -84,7 +84,7 @@ export function CultureGraph({ slug, year }: { slug: string; year: number | null
                 data-testid="graph-edge"
               >
                 <title>
-                  {`${titleOf.get(edge.fromId) ?? ''} — ${t(`relation.outgoing.${edge.relationType}`)} — ${titleOf.get(edge.toId) ?? ''}`}
+                  {`${titleOf.get(edge.fromId) ?? ''} – ${t(`relation.outgoing.${edge.relationType}`)} – ${titleOf.get(edge.toId) ?? ''}`}
                 </title>
               </line>
             );

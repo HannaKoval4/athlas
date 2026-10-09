@@ -6,6 +6,7 @@ import Markdown from 'react-markdown';
 import { Link, useLocation, useNavigate, useParams } from 'react-router';
 import { isApiError } from '../api/client.ts';
 import { useCard } from '../atlas/content-api.ts';
+import { BooksBlock } from '../books/BooksBlock.tsx';
 import { CreditText } from '../atlas/CreditText.tsx';
 import { PageContainer } from '../components/AppLayout.tsx';
 import { Badge } from '../components/ui/badge.tsx';
@@ -14,7 +15,7 @@ import { useRecordView } from '../discover/api.ts';
 import { NotesPanel } from '../notes/NotesPanel.tsx';
 
 /**
- * /cards/:slug — the card with its period, sources and links in both directions (F-05, F-06)
+ * /cards/:slug – the card with its period, sources and links in both directions (F-05, F-06)
  * and the user's notes on it in a side column (F-07).
  */
 export function CardPage() {
@@ -49,7 +50,10 @@ export function CardPage() {
               </Link>
             </div>
           ) : (
-            <CardBody card={card.data} />
+            <>
+              <CardBody card={card.data} />
+              <BooksBlock key={card.data.id} query={{ cardId: card.data.id }} />
+            </>
           )}
         </article>
         {card.data && (

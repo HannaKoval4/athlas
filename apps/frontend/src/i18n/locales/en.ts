@@ -57,7 +57,7 @@ export const en: DeepStringify<typeof ru> = {
     graphLabel: 'Link graph: {{nodes}} cards, {{edges}} links',
     graphHint: 'Hover or focus a card to highlight its links; press it to open the card.',
     graphNoEdges:
-      'There are no links between the cards of this period — turn on “Show all cards of the culture”.',
+      'There are no links between the cards of this period – turn on “Show all cards of the culture”.',
     graphLegend: 'Card types',
     close: 'Close the culture panel',
     period: 'Period',
@@ -238,6 +238,13 @@ export const en: DeepStringify<typeof ru> = {
     next: 'Next',
     page: 'Page {{page}} of {{pages}}',
     updating: 'Updating the results…',
+  },
+  books: {
+    title: 'Books on the topic',
+    source: 'Data: Open Library',
+    external: 'opens on the Open Library website',
+    firstPublished: 'first published in {{year}}',
+    hint: 'A selection from the open Open Library catalogue; most books are in English.',
   },
   quiz: {
     sectionTitle: 'Era quiz',

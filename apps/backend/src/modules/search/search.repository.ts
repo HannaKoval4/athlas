@@ -55,7 +55,7 @@ function overlapsYears(alias: string, filters: SearchFilters): Prisma.Sql {
 }
 
 /**
- * The culture lived in the region; with a year filter — during an overlapping period
+ * The culture lived in the region; with a year filter – during an overlapping period
  * (CultureRegion is the time-slice table of the map).
  */
 function cultureInRegion(cultureIdColumn: string, filters: SearchFilters): Prisma.Sql {

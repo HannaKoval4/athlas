@@ -60,6 +60,8 @@ export interface SeedCard extends Verifiable {
   type: CardType;
   title: string;
   summary: string;
+  /** English search phrase for Open Library (the atlas content is Russian, the catalogue is not) */
+  booksQuery?: string;
   /** Markdown paragraphs (joined with blank lines); an array keeps the JSON free of escapes. */
   content: string[];
   startYear: number;
@@ -99,6 +101,8 @@ export interface SeedCulture extends Verifiable {
   endYear: number;
   dateApproximate?: boolean;
   color: string;
+  /** English search phrase for Open Library */
+  booksQuery?: string;
   regions: SeedCultureRegion[];
   cards: SeedCard[];
   links: SeedCardLink[];

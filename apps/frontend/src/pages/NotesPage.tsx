@@ -7,7 +7,7 @@ import { useNotes } from '../notes/api.ts';
 import { ExportNotes } from '../notes/ExportNotes.tsx';
 import { NoteItem } from '../notes/NoteItem.tsx';
 
-/** /notes — the notebook: every note of the user, grouped culture -> card like the export. */
+/** /notes – the notebook: every note of the user, grouped culture -> card like the export. */
 export function NotesPage() {
   const { t, i18n } = useTranslation();
   const notes = useNotes({});

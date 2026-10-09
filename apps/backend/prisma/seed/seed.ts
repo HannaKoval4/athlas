@@ -195,6 +195,7 @@ export async function seedDatabase(
           endYear: culture.endYear,
           dateApproximate: culture.dateApproximate ?? false,
           color: culture.color,
+          booksQuery: culture.booksQuery ?? null,
         };
         const { id: cultureId } = await tx.culture.upsert({
           where: { slug: culture.slug },
@@ -234,6 +235,7 @@ export async function seedDatabase(
             dateApproximate: card.dateApproximate ?? false,
             imageUrl: card.image?.url ?? null,
             imageCredit: card.image?.credit ?? null,
+            booksQuery: card.booksQuery ?? null,
             published: true,
             publishedAt: new Date(firstPublishedAt.getTime() + cardIndex * DAY_MS),
           };

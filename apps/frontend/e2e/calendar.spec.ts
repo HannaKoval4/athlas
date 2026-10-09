@@ -24,7 +24,7 @@ test.describe('Calendar and "Today in history"', () => {
     await page.goto('/calendar');
 
     await expect(page.getByTestId('today-caption')).toHaveText(
-      'На 7 октября в атласе ничего не отмечено. Ближайшая дата — 4 ноября.',
+      'На 7 октября в атласе ничего не отмечено. Ближайшая дата – 4 ноября.',
     );
     await expect(page.getByTestId('today-card-tutankhamun-tomb')).toBeVisible();
   });

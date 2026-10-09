@@ -12,6 +12,7 @@ const greece: Culture = {
   endYear: -146,
   dateApproximate: true,
   color: '#2F6DB5',
+  booksQuery: 'Ancient Greece',
 };
 
 describe('CulturesService', () => {

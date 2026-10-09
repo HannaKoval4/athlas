@@ -2,6 +2,7 @@ import { join } from 'node:path';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './modules/auth/auth.module';
+import { BooksModule } from './modules/books/books.module';
 import { CalendarModule } from './modules/calendar/calendar.module';
 import { CardsModule } from './modules/cards/cards.module';
 import { CulturesModule } from './modules/cultures/cultures.module';
@@ -40,6 +41,7 @@ import { PrismaModule } from './prisma/prisma.module';
     FeedModule,
     HistoryModule,
     QuizzesModule,
+    BooksModule,
   ],
 })
 export class AppModule {}

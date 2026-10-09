@@ -10,6 +10,8 @@ import type { SeedData } from './types';
 
 const HEX_COLOR = /^#[0-9a-fA-F]{6}$/;
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+/** Open Library search phrase: short and in Latin script (the catalogue is mostly English). */
+const BOOKS_QUERY = /^[A-Za-z0-9 '.,-]{2,100}$/;
 const MIN_POLYGON_POINTS = 5;
 const MAX_POLYGON_POINTS = 16;
 /** Content rule: a quiz pool has at least this many questions (10 are drawn per attempt). */
@@ -133,6 +135,9 @@ export function validateSeedData(data: SeedData): string[] {
     const where = `culture "${culture.slug}"`;
     checkPeriod(issues, where, culture.startYear, culture.endYear);
     if (!HEX_COLOR.test(culture.color)) issues.push(`${where}: color must be #RRGGBB`);
+    if (culture.booksQuery !== undefined && !BOOKS_QUERY.test(culture.booksQuery)) {
+      issues.push(`${where}: booksQuery must be 2-100 Latin letters, digits or spaces`);
+    }
 
     if (culture.regions.length === 0) issues.push(`${where}: has no regions`);
     for (const cr of culture.regions) {
@@ -158,6 +163,9 @@ export function validateSeedData(data: SeedData): string[] {
         issues.push(`${cardWhere}: content must have non-empty paragraphs`);
       }
       checkPeriod(issues, cardWhere, card.startYear, card.endYear);
+      if (card.booksQuery !== undefined && !BOOKS_QUERY.test(card.booksQuery)) {
+        issues.push(`${cardWhere}: booksQuery must be 2-100 Latin letters, digits or spaces`);
+      }
       checkDayOfYear(issues, cardWhere, card.month, card.day);
       // Content rule: every card cites at least one real source
       if (card.sources.length === 0) issues.push(`${cardWhere}: has no sources`);
