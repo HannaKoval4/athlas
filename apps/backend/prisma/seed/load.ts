@@ -1,6 +1,6 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import type { SeedCulture, SeedData, SeedEra, SeedRegion, SeedSource } from './types';
+import type { SeedCulture, SeedData, SeedEra, SeedQuizFile, SeedRegion, SeedSource } from './types';
 
 export const SEED_DATA_DIR = __dirname;
 
@@ -32,5 +32,10 @@ export function loadSeedData(dir: string = SEED_DATA_DIR): SeedData {
     regions,
     sources: readJson<SeedSource[]>(join(dir, 'sources.json')),
     cultures: CULTURE_FILES.map((file) => readJson<SeedCulture>(join(dir, file))),
+    // One file per culture in quizzes/ (pools are long, so they live apart from the cards).
+    quizzes: readdirSync(join(dir, 'quizzes'))
+      .filter((file) => file.endsWith('.json'))
+      .sort()
+      .map((file) => readJson<SeedQuizFile>(join(dir, 'quizzes', file))),
   };
 }

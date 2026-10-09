@@ -1,7 +1,7 @@
 import { CardType } from '../../src/generated/prisma/enums';
 import { loadSeedData } from './load';
-import type { SeedCard, SeedData } from './types';
-import { collectVerifyNotes, validateSeedData } from './validate';
+import type { SeedCard, SeedData, SeedQuestion } from './types';
+import { collectVerifyNotes, MIN_QUIZ_POOL, validateSeedData } from './validate';
 
 function card(slug: string, type: CardType, overrides: Partial<SeedCard> = {}): SeedCard {
   return {
@@ -69,7 +69,28 @@ function validData(): SeedData {
         ],
       },
     ],
+    quizzes: [
+      {
+        culture: 'culture',
+        quizzes: [{ era: 'era-b', title: 'Quiz', questions: questions(MIN_QUIZ_POOL) }],
+      },
+    ],
   };
+}
+
+function questions(count: number): SeedQuestion[] {
+  return Array.from({ length: count }, (_, i) => ({
+    text: `Question ${i + 1}?`,
+    // card-1: the boundary-year tests move card-0 out of the culture's period.
+    card: 'card-1',
+    correct: ['Yes'],
+    wrong: ['No'],
+    explanation: 'Because.',
+  }));
+}
+
+function firstQuiz(data: SeedData) {
+  return data.quizzes[0].quizzes[0];
 }
 
 describe('validateSeedData', () => {
@@ -242,6 +263,56 @@ describe('validateSeedData', () => {
 
       expect(validateSeedData(data)).toContainEqual('culture "culture": color must be #RRGGBB');
     });
+  });
+});
+
+describe('quizzes (DM-08, BR-09, BR-10)', () => {
+  it('requires a pool of at least 15 questions', () => {
+    const data = validData();
+    firstQuiz(data).questions = questions(MIN_QUIZ_POOL - 1);
+    expect(validateSeedData(data)).toContain('quiz era-b/culture: pool has 14 questions, needs 15');
+  });
+
+  it('rejects a second quiz for the same pair', () => {
+    const data = validData();
+    data.quizzes[0].quizzes.push({ ...firstQuiz(data) });
+    expect(validateSeedData(data)).toContain('quiz era-b/culture: duplicate quiz for the pair');
+  });
+
+  it('rejects an era the culture does not reach', () => {
+    const data = validData();
+    data.eras.push({ slug: 'era-c', name: 'C', startYear: 477, endYear: 1100, sortOrder: 3 });
+    firstQuiz(data).era = 'era-c';
+    expect(validateSeedData(data)).toContain(
+      'quiz era-c/culture: the culture does not overlap the era',
+    );
+  });
+
+  it('requires a correct and a wrong option, without duplicates', () => {
+    const data = validData();
+    const [noCorrect, duplicate] = firstQuiz(data).questions;
+    noCorrect.correct = [];
+    duplicate.wrong = ['Yes'];
+    const issues = validateSeedData(data);
+    expect(issues).toContain('quiz era-b/culture question 1: no correct option');
+    expect(issues).toContain('quiz era-b/culture question 2: duplicate option');
+  });
+
+  it('requires an explanation for the review of mistakes (BR-14)', () => {
+    const data = validData();
+    firstQuiz(data).questions[0].explanation = ' ';
+    expect(validateSeedData(data)).toContain(
+      'quiz era-b/culture question 1: empty explanation (BR-14)',
+    );
+  });
+
+  it('rejects a card of another era', () => {
+    const data = validData();
+    data.cultures[0].cards[1].startYear = -2000;
+    data.cultures[0].cards[1].endYear = -1900;
+    expect(validateSeedData(data)).toContain(
+      'quiz era-b/culture question 1: card "card-1" is outside the era',
+    );
   });
 });
 

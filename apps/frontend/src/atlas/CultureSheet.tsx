@@ -23,6 +23,7 @@ import { Switch } from '../components/ui/switch.tsx';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs.tsx';
 import { RandomTopicNote } from '../discover/RandomTopicNote.tsx';
 import { NotesPanel } from '../notes/NotesPanel.tsx';
+import { CultureQuizzes } from '../quizzes/CultureQuizzes.tsx';
 import { useCardList, useCulture } from './content-api.ts';
 import { CultureGallery } from './CultureGallery.tsx';
 import { CultureGraph } from './CultureGraph.tsx';
@@ -162,6 +163,10 @@ export function CultureSheet() {
                   onTypeChange={(type) => updateParams({ type })}
                 />
               )}
+
+              <div className="border-t pt-4">
+                <CultureQuizzes cultureId={data.id} eraSlug={params.get('era')} />
+              </div>
 
               <div className="border-t pt-4">
                 <NotesPanel

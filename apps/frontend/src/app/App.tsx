@@ -13,7 +13,9 @@ import { MapPage } from '../pages/MapPage.tsx';
 import { NewPage } from '../pages/NewPage.tsx';
 import { NotesPage } from '../pages/NotesPage.tsx';
 import { NotFoundPage } from '../pages/NotFoundPage.tsx';
+import { AttemptPage } from '../pages/AttemptPage.tsx';
 import { ProfilePage } from '../pages/ProfilePage.tsx';
+import { QuizPage } from '../pages/QuizPage.tsx';
 import { SearchPage } from '../pages/SearchPage.tsx';
 
 const queryClient = new QueryClient({
@@ -52,6 +54,8 @@ export function App() {
               <Route path="/search" element={<SearchPage />} />
               <Route path="/new" element={<NewPage />} />
               <Route path="/notes" element={<NotesPage />} />
+              <Route path="/quizzes/:id" element={<QuizPage />} />
+              <Route path="/quizzes/attempts/:id" element={<AttemptPage />} />
               <Route path="/profile" element={<ProfilePage />} />
             </Route>
           </Route>

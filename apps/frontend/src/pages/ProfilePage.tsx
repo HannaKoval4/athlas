@@ -20,6 +20,7 @@ import {
   TextInput,
 } from '../components/form.tsx';
 import { ViewHistory } from '../discover/ViewHistory.tsx';
+import { Achievements } from '../quizzes/Achievements.tsx';
 import { ExportNotes } from '../notes/ExportNotes.tsx';
 
 export function ProfilePage() {
@@ -41,6 +42,7 @@ export function ProfilePage() {
           <p className="text-sm text-stone-600">{t('notes.exportHint')}</p>
           <ExportNotes />
         </section>
+        <Achievements />
         <ViewHistory />
       </div>
     </PageContainer>

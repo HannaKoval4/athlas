@@ -14,6 +14,7 @@ describe('Seed (e2e)', () => {
   let prisma: PrismaClient;
   const data = loadSeedData();
   const allCards = data.cultures.flatMap((c) => c.cards);
+  const allQuizzes = data.quizzes.flatMap((file) => file.quizzes);
 
   beforeAll(async () => {
     prisma = createTestPrisma();
@@ -37,6 +38,8 @@ describe('Seed (e2e)', () => {
       cardSources: allCards.reduce((n, c) => n + c.sources.length, 0),
       cardLinks: data.cultures.reduce((n, c) => n + c.links.length, 0),
       holidays: data.cultures.reduce((n, c) => n + c.holidays.length, 0),
+      quizzes: allQuizzes.length,
+      questions: allQuizzes.reduce((n, q) => n + q.questions.length, 0),
       users: 2,
     });
   });
@@ -70,6 +73,29 @@ describe('Seed (e2e)', () => {
 
     expect(cards.every((c) => c.published && c.publishedAt)).toBe(true);
     expect(new Set(cards.map((c) => c.publishedAt!.getTime())).size).toBe(cards.length);
+  });
+
+  it('keeps question and option ids on re-run, so past attempts stay reviewable', async () => {
+    const ids = async () =>
+      (await prisma.answerOption.findMany({ select: { id: true }, orderBy: { id: 'asc' } })).map(
+        (option) => option.id,
+      );
+    const before = await ids();
+
+    await seedDatabase(prisma, data, OPTIONS);
+
+    expect(await ids()).toEqual(before);
+  });
+
+  it('marks questions with several correct options as multiple-choice (BR-10)', async () => {
+    const questions = await prisma.question.findMany({
+      select: { multiple: true, options: { select: { isCorrect: true } } },
+    });
+
+    for (const question of questions) {
+      const correct = question.options.filter((option) => option.isCorrect).length;
+      expect(question.multiple).toBe(correct > 1);
+    }
   });
 
   it('gives every card at least one source', async () => {

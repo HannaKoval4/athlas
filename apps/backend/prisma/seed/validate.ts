@@ -12,6 +12,8 @@ const HEX_COLOR = /^#[0-9a-fA-F]{6}$/;
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const MIN_POLYGON_POINTS = 5;
 const MAX_POLYGON_POINTS = 16;
+/** Content rule: a quiz pool has at least this many questions (10 are drawn per attempt). */
+export const MIN_QUIZ_POOL = 15;
 
 function checkPeriod(issues: string[], where: string, startYear: number, endYear: number): void {
   if (!isValidYear(startYear)) issues.push(`${where}: invalid startYear ${startYear}`);
@@ -210,7 +212,72 @@ export function validateSeedData(data: SeedData): string[] {
     }
   }
 
+  checkQuizzes(issues, data);
   return issues;
+}
+
+/** DM-08, BR-09, BR-10: one quiz per era + culture pair, well-formed questions. */
+function checkQuizzes(issues: string[], data: SeedData): void {
+  const erasBySlug = new Map(data.eras.map((era) => [era.slug, era]));
+  const culturesBySlug = new Map(data.cultures.map((culture) => [culture.slug, culture]));
+  const pairs = new Set<string>();
+
+  for (const file of data.quizzes) {
+    const culture = culturesBySlug.get(file.culture);
+    if (!culture) {
+      issues.push(`quizzes "${file.culture}": unknown culture`);
+      continue;
+    }
+    const cardsBySlug = new Map(culture.cards.map((card) => [card.slug, card]));
+
+    for (const quiz of file.quizzes) {
+      const where = `quiz ${quiz.era}/${file.culture}`;
+      const era = erasBySlug.get(quiz.era);
+      if (!era) {
+        issues.push(`${where}: unknown era`);
+        continue;
+      }
+      if (pairs.has(where)) issues.push(`${where}: duplicate quiz for the pair`);
+      pairs.add(where);
+      // The pair must exist on the timeline: the culture overlaps the era (DM-03).
+      const from = Math.max(era.startYear, culture.startYear);
+      const to = Math.min(era.endYear, culture.endYear);
+      if (from > to) issues.push(`${where}: the culture does not overlap the era`);
+      if (!quiz.title.trim()) issues.push(`${where}: empty title`);
+      if (quiz.passPercent !== undefined && (quiz.passPercent < 1 || quiz.passPercent > 100)) {
+        issues.push(`${where}: passPercent must be 1-100`);
+      }
+      if (quiz.questionsPerAttempt !== undefined && quiz.questionsPerAttempt < 1) {
+        issues.push(`${where}: questionsPerAttempt must be positive`);
+      }
+      if (quiz.questions.length < MIN_QUIZ_POOL) {
+        issues.push(
+          `${where}: pool has ${quiz.questions.length} questions, needs ${MIN_QUIZ_POOL}`,
+        );
+      }
+
+      const texts = new Set<string>();
+      quiz.questions.forEach((question, index) => {
+        const qWhere = `${where} question ${index + 1}`;
+        if (!question.text.trim()) issues.push(`${qWhere}: empty text`);
+        if (texts.has(question.text)) issues.push(`${qWhere}: duplicate question text`);
+        texts.add(question.text);
+        if (!question.explanation.trim()) issues.push(`${qWhere}: empty explanation (BR-14)`);
+        if (question.correct.length === 0) issues.push(`${qWhere}: no correct option`);
+        if (question.wrong.length === 0) issues.push(`${qWhere}: no wrong option`);
+        const options = [...question.correct, ...question.wrong];
+        if (new Set(options).size !== options.length) issues.push(`${qWhere}: duplicate option`);
+        if (options.some((option) => !option.trim())) issues.push(`${qWhere}: empty option`);
+        if (question.card) {
+          const card = cardsBySlug.get(question.card);
+          if (!card) issues.push(`${qWhere}: unknown card "${question.card}" in this culture`);
+          else if (card.startYear > to || card.endYear < from) {
+            issues.push(`${qWhere}: card "${question.card}" is outside the era`);
+          }
+        }
+      });
+    }
+  }
 }
 
 /** Every `verify` note in the data, for the author's manual fact-check list. */
@@ -230,6 +297,13 @@ export function collectVerifyNotes(data: SeedData): string[] {
     c.cards.forEach((card) => add(`card ${card.slug} / image`, card.image?.verify));
     c.links.forEach((l) => add(`link ${l.from} -> ${l.to}`, l.verify));
     c.holidays.forEach((h) => add(`holiday ${h.slug}`, h.verify));
+  }
+  for (const file of data.quizzes) {
+    for (const quiz of file.quizzes) {
+      const where = `quiz ${quiz.era}/${file.culture}`;
+      add(where, quiz.verify);
+      quiz.questions.forEach((q, i) => add(`${where} question ${i + 1}`, q.verify));
+    }
   }
   return notes;
 }

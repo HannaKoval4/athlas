@@ -1,7 +1,7 @@
 import * as argon2 from 'argon2';
 import type { Prisma, PrismaClient } from '../../src/generated/prisma/client';
 import { Role } from '../../src/generated/prisma/enums';
-import type { SeedData } from './types';
+import type { SeedData, SeedQuiz } from './types';
 
 export interface SeedUser {
   email: string;
@@ -29,6 +29,8 @@ export interface SeedCounts {
   cardSources: number;
   cardLinks: number;
   holidays: number;
+  quizzes: number;
+  questions: number;
   users: number;
 }
 
@@ -37,6 +39,76 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 const PARAGRAPH_SEPARATOR = '\n\n';
 
 type Tx = Prisma.TransactionClient;
+
+/**
+ * Writes one quiz idempotently without a natural key on questions: questions are matched by
+ * text and options by text within their question. Matching (instead of delete + insert)
+ * keeps the ids that past attempts refer to, so their review stays correct after a re-seed.
+ * Questions and options removed from the JSON are deleted.
+ */
+async function upsertQuiz(
+  tx: Tx,
+  quiz: SeedQuiz,
+  eraId: string,
+  cultureId: string,
+  cardIds: Map<string, string>,
+): Promise<void> {
+  const fields = {
+    title: quiz.title,
+    ...(quiz.questionsPerAttempt !== undefined && {
+      questionsPerAttempt: quiz.questionsPerAttempt,
+    }),
+    ...(quiz.passPercent !== undefined && { passPercent: quiz.passPercent }),
+  };
+  const { id: quizId } = await tx.quiz.upsert({
+    where: { eraId_cultureId: { eraId, cultureId } },
+    update: fields,
+    create: { eraId, cultureId, ...fields },
+  });
+
+  const existing = await tx.question.findMany({
+    where: { quizId },
+    select: { id: true, text: true, options: { select: { id: true, text: true } } },
+  });
+  const byText = new Map(existing.map((question) => [question.text, question]));
+
+  for (const question of quiz.questions) {
+    const questionFields = {
+      explanation: question.explanation,
+      multiple: question.correct.length > 1,
+      cardId: question.card ? cardIds.get(question.card)! : null,
+    };
+    const found = byText.get(question.text);
+    byText.delete(question.text);
+    const questionId = found
+      ? (await tx.question.update({ where: { id: found.id }, data: questionFields })).id
+      : (await tx.question.create({ data: { quizId, text: question.text, ...questionFields } })).id;
+
+    const optionsByText = new Map((found?.options ?? []).map((option) => [option.text, option.id]));
+    const wanted = [
+      ...question.correct.map((text) => ({ text, isCorrect: true })),
+      ...question.wrong.map((text) => ({ text, isCorrect: false })),
+    ];
+    for (const option of wanted) {
+      const optionId = optionsByText.get(option.text);
+      optionsByText.delete(option.text);
+      if (optionId) {
+        await tx.answerOption.update({
+          where: { id: optionId },
+          data: { isCorrect: option.isCorrect },
+        });
+      } else {
+        await tx.answerOption.create({ data: { questionId, ...option } });
+      }
+    }
+    if (optionsByText.size > 0) {
+      await tx.answerOption.deleteMany({ where: { id: { in: [...optionsByText.values()] } } });
+    }
+  }
+
+  const removed = [...byText.values()].map((question) => question.id);
+  if (removed.length > 0) await tx.question.deleteMany({ where: { id: { in: removed } } });
+}
 
 async function upsertUser(tx: Tx, user: SeedUser, role: Role): Promise<void> {
   const email = user.email.trim().toLowerCase(); // BR-01
@@ -61,6 +133,7 @@ export async function seedDatabase(
 
   await prisma.$transaction(
     async (tx) => {
+      const eraIds = new Map<string, string>();
       for (const era of data.eras) {
         const fields = {
           name: era.name,
@@ -69,11 +142,12 @@ export async function seedDatabase(
           endYear: era.endYear,
           sortOrder: era.sortOrder,
         };
-        await tx.era.upsert({
+        const row = await tx.era.upsert({
           where: { slug: era.slug },
           update: fields,
           create: { slug: era.slug, ...fields },
         });
+        eraIds.set(era.slug, row.id);
       }
 
       const regionIds = new Map<string, string>();
@@ -112,6 +186,7 @@ export async function seedDatabase(
 
       let cardIndex = 0;
       const cardIds = new Map<string, string>();
+      const cultureIds = new Map<string, string>();
       for (const culture of data.cultures) {
         const cultureFields = {
           name: culture.name,
@@ -126,6 +201,7 @@ export async function seedDatabase(
           update: cultureFields,
           create: { slug: culture.slug, ...cultureFields },
         });
+        cultureIds.set(culture.slug, cultureId);
 
         for (const cr of culture.regions) {
           const regionId = regionIds.get(cr.region)!;
@@ -212,6 +288,12 @@ export async function seedDatabase(
         }
       }
 
+      for (const file of data.quizzes) {
+        for (const quiz of file.quizzes) {
+          await upsertQuiz(tx, quiz, eraIds.get(quiz.era)!, cultureIds.get(file.culture)!, cardIds);
+        }
+      }
+
       await upsertUser(tx, options.admin, Role.ADMIN);
       if (options.demo) await upsertUser(tx, options.demo, Role.USER);
     },
@@ -228,6 +310,8 @@ export async function seedDatabase(
     cardSources,
     cardLinks,
     holidays,
+    quizzes,
+    questions,
     users,
   ] = await Promise.all([
     prisma.era.count(),
@@ -239,6 +323,8 @@ export async function seedDatabase(
     prisma.cardSource.count(),
     prisma.cardLink.count(),
     prisma.holiday.count(),
+    prisma.quiz.count(),
+    prisma.question.count(),
     prisma.user.count(),
   ]);
   return {
@@ -251,6 +337,8 @@ export async function seedDatabase(
     cardSources,
     cardLinks,
     holidays,
+    quizzes,
+    questions,
     users,
   };
 }

@@ -11,6 +11,7 @@ import { HealthModule } from './modules/health/health.module';
 import { HistoryModule } from './modules/history/history.module';
 import { MapModule } from './modules/map/map.module';
 import { NotesModule } from './modules/notes/notes.module';
+import { QuizzesModule } from './modules/quizzes/quizzes.module';
 import { RandomTopicModule } from './modules/random/random-topic.module';
 import { SearchModule } from './modules/search/search.module';
 import { UsersModule } from './modules/users/users.module';
@@ -38,6 +39,7 @@ import { PrismaModule } from './prisma/prisma.module';
     RandomTopicModule,
     FeedModule,
     HistoryModule,
+    QuizzesModule,
   ],
 })
 export class AppModule {}

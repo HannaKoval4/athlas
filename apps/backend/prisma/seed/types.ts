@@ -105,9 +105,38 @@ export interface SeedCulture extends Verifiable {
   holidays: SeedHoliday[];
 }
 
+/**
+ * A quiz question. Options are listed as correct and wrong texts; the order does not matter
+ * (options are shuffled for every attempt, BR-09). More than one correct option makes the
+ * question multiple-choice (BR-10: the chosen set must match exactly).
+ */
+export interface SeedQuestion extends Verifiable {
+  text: string;
+  /** Card to revisit after a wrong answer (BR-14) */
+  card?: string;
+  correct: string[];
+  wrong: string[];
+  explanation: string;
+}
+
+/** The quiz of one era + culture pair (DM-08). */
+export interface SeedQuiz extends Verifiable {
+  era: string;
+  title: string;
+  questionsPerAttempt?: number;
+  passPercent?: number;
+  questions: SeedQuestion[];
+}
+
+export interface SeedQuizFile {
+  culture: string;
+  quizzes: SeedQuiz[];
+}
+
 export interface SeedData {
   eras: SeedEra[];
   regions: SeedRegion[];
   sources: SeedSource[];
   cultures: SeedCulture[];
+  quizzes: SeedQuizFile[];
 }
