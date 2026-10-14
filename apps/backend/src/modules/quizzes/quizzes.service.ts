@@ -61,7 +61,20 @@ interface Progress {
   attempts: number;
 }
 
-/** BR-12: the best result is the maximum score among finished attempts. */
+/** A row of the view quiz_best_result (BR-12). */
+interface QuizBestResultRow {
+  quizId: string;
+  bestScore: number;
+  total: number;
+  passed: boolean;
+  attempts: number;
+}
+
+/**
+ * BR-12: the best result is the maximum score among finished attempts.
+ * Reference implementation of the rule: the service reads the same result from the view
+ * quiz_best_result; the unit tests of this function document the expected semantics.
+ */
 export function bestResult(
   attempts: readonly { score: number | null; total: number; passed: boolean | null }[],
 ): QuizBest | null {
@@ -338,19 +351,23 @@ export class QuizzesService {
     return rows.map(toAchievement);
   }
 
+  /**
+   * BR-12: the best finished attempt and the number of finished attempts per quiz, read from
+   * the view quiz_best_result (migration 20261013132052_db_objects). Quizzes without finished
+   * attempts have no row.
+   */
   private async progress(userId: string, quizIds: string[]): Promise<Map<string, Progress>> {
-    const attempts = await this.prisma.quizAttempt.findMany({
-      where: { userId, quizId: { in: quizIds }, finishedAt: { not: null } },
-      select: { quizId: true, score: true, total: true, passed: true },
-    });
-    const byQuiz = new Map<string, typeof attempts>();
-    for (const attempt of attempts) {
-      byQuiz.set(attempt.quizId, [...(byQuiz.get(attempt.quizId) ?? []), attempt]);
-    }
+    const rows = await this.prisma.$queryRaw<QuizBestResultRow[]>`
+      SELECT "quizId", "bestScore", total, passed, attempts
+      FROM quiz_best_result
+      WHERE "userId" = ${userId} AND "quizId" = ANY(${quizIds}::text[])`;
     return new Map(
-      [...byQuiz].map(([quizId, rows]) => [
-        quizId,
-        { best: bestResult(rows), attempts: rows.length },
+      rows.map((row) => [
+        row.quizId,
+        {
+          best: { score: row.bestScore, total: row.total, passed: row.passed },
+          attempts: row.attempts,
+        },
       ]),
     );
   }

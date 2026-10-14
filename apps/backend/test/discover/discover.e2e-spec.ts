@@ -9,6 +9,9 @@ import { createCard, createCulture, createEra } from '../factories';
 import { createTestApp, json } from '../utils/app';
 import { createTestPrisma, truncateAll } from '../utils/db';
 
+// A published card always has publishedAt (trigger card_published_at_trg); this one is older.
+const OLDER_PUBLISHED_AT = new Date(Date.UTC(2026, 8, 1));
+
 describe('Random topic, feed and view history (e2e)', () => {
   let app: INestApplication<App>;
   let prisma: PrismaClient;
@@ -103,15 +106,19 @@ describe('Random topic, feed and view history (e2e)', () => {
       endYear: -30,
     });
     const draft = await createCard(prisma, empty.id, { title: 'Черновик', published: false });
-    const noDate = await createCard(prisma, greece.id, { title: 'Без даты публикации' });
+    const older = await createCard(prisma, greece.id, { title: 'Старая публикация' });
     await prisma.card.update({ where: { id: parthenon.id }, data: { publishedAt: day(1) } });
     await prisma.card.update({ where: { id: pyramid.id }, data: { publishedAt: day(3) } });
     await prisma.card.update({ where: { id: ptolemy.id }, data: { publishedAt: day(2) } });
+    await prisma.card.update({
+      where: { id: older.id },
+      data: { publishedAt: OLDER_PUBLISHED_AT },
+    });
     Object.assign(ids, {
       parthenon: parthenon.id,
       pyramid: pyramid.id,
       draft: draft.id,
-      noDate: noDate.id,
+      older: older.id,
     });
 
     for (const [key, eraId, cultureId] of [
@@ -186,8 +193,13 @@ describe('Random topic, feed and view history (e2e)', () => {
     it('lists published cards, newest first', async () => {
       const feed = json<FeedCard[]>(await admin.get('/api/feed/new').expect(200));
 
-      // The draft and the card without publishedAt are left out, for admins too.
-      expect(feed.map((card) => card.title)).toEqual(['Пирамида', 'Птолемеи', 'Парфенон']);
+      // The draft is left out, for admins too.
+      expect(feed.map((card) => card.title)).toEqual([
+        'Пирамида',
+        'Птолемеи',
+        'Парфенон',
+        'Старая публикация',
+      ]);
       expect(feed[0]?.publishedAt).toBe('2026-10-03T00:00:00.000Z');
     });
 
@@ -240,11 +252,15 @@ describe('Random topic, feed and view history (e2e)', () => {
 
     it('hides a card that was unpublished after the view', async () => {
       const agent = await signIn('unpublish@example.com');
-      await view(agent, ids.noDate ?? '');
-      await prisma.card.update({ where: { id: ids.noDate }, data: { published: false } });
+      await view(agent, ids.older ?? '');
+      await prisma.card.update({ where: { id: ids.older }, data: { published: false } });
 
       expect(await history(agent)).toEqual([]);
-      await prisma.card.update({ where: { id: ids.noDate }, data: { published: true } });
+      // Unpublishing cleared publishedAt (trigger card_published_at_trg): restore the date.
+      await prisma.card.update({
+        where: { id: ids.older },
+        data: { published: true, publishedAt: OLDER_PUBLISHED_AT },
+      });
     });
 
     it('keeps the latest 20 cards', async () => {

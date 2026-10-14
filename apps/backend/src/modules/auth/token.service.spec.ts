@@ -47,7 +47,23 @@ function createPrismaFake() {
       },
     ),
   };
-  return { rows, prisma: { refreshToken } as unknown as PrismaService, refreshToken };
+  // CALL revoke_user_sessions(userId): the only raw statement TokenService runs.
+  const $executeRaw = jest.fn((_sql: TemplateStringsArray, userId: string) => {
+    let count = 0;
+    for (const row of rows.values()) {
+      if (row.userId === userId && row.revokedAt === null) {
+        row.revokedAt = new Date();
+        count += 1;
+      }
+    }
+    return Promise.resolve(count);
+  });
+  return {
+    rows,
+    prisma: { refreshToken, $executeRaw } as unknown as PrismaService,
+    refreshToken,
+    $executeRaw,
+  };
 }
 
 function createService(prisma: PrismaService, ttl = { access: '15m', refresh: '7d' }) {
@@ -173,9 +189,7 @@ describe('TokenService', () => {
       fake.refreshToken.updateMany.mockResolvedValueOnce({ count: 0 });
 
       await expect(service.rotate(first.refreshToken)).rejects.toThrow('reuse detected');
-      expect(fake.refreshToken.updateMany).toHaveBeenLastCalledWith(
-        expect.objectContaining({ where: { userId: user.id, revokedAt: null } }),
-      );
+      expect(fake.$executeRaw).toHaveBeenCalledWith(expect.anything(), user.id);
     });
 
     it('rejects a validly signed token whose row does not exist', async () => {
@@ -225,6 +239,7 @@ describe('TokenService', () => {
       await service.revokeAll(user.id);
 
       expect([...fake.rows.values()].every((row) => row.revokedAt !== null)).toBe(true);
+      expect(fake.$executeRaw.mock.calls[0]?.[0].join('?')).toBe('CALL revoke_user_sessions(?)');
     });
   });
 

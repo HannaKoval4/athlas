@@ -135,12 +135,12 @@ export class TokenService {
     });
   }
 
-  /** Ends every active session of the user (reuse detection, password change). */
+  /**
+   * Ends every active session of the user (reuse detection, password change) through the
+   * stored procedure revoke_user_sessions (migration 20261013132052_db_objects).
+   */
   async revokeAll(userId: string): Promise<void> {
-    await this.prisma.refreshToken.updateMany({
-      where: { userId, revokedAt: null },
-      data: { revokedAt: new Date() },
-    });
+    await this.prisma.$executeRaw`CALL revoke_user_sessions(${userId})`;
   }
 
   private async verify<T extends object>(token: string, secret: string): Promise<T> {

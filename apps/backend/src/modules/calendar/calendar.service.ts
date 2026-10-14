@@ -5,7 +5,7 @@ import {
   seasonOfMonth,
 } from '@atlas/shared';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Prisma } from '../../generated/prisma/client';
+import type { Prisma } from '../../generated/prisma/client';
 import { HolidayDateType, Season } from '../../generated/prisma/enums';
 import { PrismaService } from '../../prisma/prisma.service';
 import { visibleCards } from '../cards/card-visibility';
@@ -133,26 +133,15 @@ export class CalendarService {
 
   /**
    * The first day, starting from `from` and wrapping around the end of the year, on which an
-   * EXACT holiday or a visible dated card falls. Days are compared as month * 100 + day:
-   * days before `from` sort after the rest of the year (false < true).
+   * EXACT holiday or a visible dated card falls. The query is the SQL function next_dated_day
+   * (migration 20261013132052_db_objects); drafts count only for admins.
    */
   private async findNearestDatedDay(
     from: CalendarDate,
     includeDrafts: boolean,
   ): Promise<CalendarDate | null> {
-    const fromKey = from.month * 100 + from.day;
-    const cardVisible = includeDrafts ? Prisma.sql`TRUE` : Prisma.sql`published`;
     const rows = await this.prisma.$queryRaw<CalendarDate[]>`
-      SELECT month, day
-      FROM (
-        SELECT month, day FROM "Holiday"
-        WHERE "dateType" = 'EXACT'
-        UNION
-        SELECT month, day FROM "Card"
-        WHERE month IS NOT NULL AND day IS NOT NULL AND ${cardVisible}
-      ) AS dated
-      ORDER BY (month * 100 + day < ${fromKey}), month, day
-      LIMIT 1`;
+      SELECT month, day FROM next_dated_day(${from.month}::int, ${from.day}::int, ${includeDrafts})`;
     return rows[0] ?? null;
   }
 }
