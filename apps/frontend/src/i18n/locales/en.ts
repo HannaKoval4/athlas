@@ -169,6 +169,13 @@ export const en: DeepStringify<typeof ru> = {
       currentPasswordWrong: 'The current password is incorrect.',
     },
   },
+  preferences: {
+    title: 'Appearance and language',
+    hint: 'Applies at once and is saved to your profile.',
+    themeNow: 'Theme: {{theme}}',
+    switchTheme: 'Theme: {{theme}}. Switch to “{{next}}”',
+    switchTo: { RU: 'Переключить на русский', EN: 'Switch to English' },
+  },
   notes: {
     title: 'Notebook',
     intro: 'All your notes grouped by culture and card. Only you can see them.',

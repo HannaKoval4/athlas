@@ -5,6 +5,21 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Atlas</title>
+    <script>
+      // Applies the saved theme before the first paint (no flash of the light theme).
+      // Mirrors applyTheme() in src/app/preferences.ts; the key is THEME_STORAGE_KEY.
+      (function () {
+        var theme = null;
+        try {
+          theme = localStorage.getItem('atlas.theme');
+        } catch (e) {}
+        var dark =
+          theme === 'DARK' ||
+          (theme !== 'LIGHT' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        document.documentElement.classList.toggle('dark', dark);
+        document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

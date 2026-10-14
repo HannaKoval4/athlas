@@ -3,12 +3,11 @@
 @import 'shadcn/tailwind.css';
 @import '@fontsource-variable/geist';
 
-/* Dark theme (class "dark" on <html>) is added in module 11 together with the theme switch. */
+/* Dark theme: class "dark" on <html>, set by PreferencesProvider (and index.html before the first paint). */
 @custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
   html {
-    color-scheme: light;
     @apply font-sans;
   }
   * {
@@ -129,6 +128,29 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+}
+
+/*
+ * Leaflet in the dark theme. OpenStreetMap has no dark tiles, so the light tiles are inverted
+ * and their hues turned back (water stays blue); region polygons live in another pane and keep
+ * their culture colors. Controls and tooltips take the theme colors.
+ */
+@layer components {
+  .dark .leaflet-tile-pane {
+    filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.9);
+  }
+  .dark .leaflet-container {
+    @apply bg-background;
+  }
+  .dark :is(.leaflet-bar a, .leaflet-control-attribution, .leaflet-tooltip) {
+    @apply border-border bg-popover text-popover-foreground;
+  }
+  .dark .leaflet-control-attribution a {
+    @apply text-amber-300;
+  }
+  .dark .leaflet-tooltip-top::before {
+    border-top-color: var(--popover);
+  }
 }
 
 /* Markdown from users and admins (card text, notes): restores list and quote styles reset by Tailwind. */

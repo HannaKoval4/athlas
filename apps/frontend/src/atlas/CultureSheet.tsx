@@ -1,10 +1,4 @@
-import {
-  CARD_TYPES,
-  type CardType,
-  type CultureDetails,
-  formatPeriod,
-  formatYear,
-} from '@atlas/shared';
+import { CARD_TYPES, type CardType, type CultureDetails } from '@atlas/shared';
 import { XIcon } from 'lucide-react';
 import { useId } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -28,6 +22,7 @@ import { CultureQuizzes } from '../quizzes/CultureQuizzes.tsx';
 import { useCardList, useCulture } from './content-api.ts';
 import { CultureGallery } from './CultureGallery.tsx';
 import { CultureGraph } from './CultureGraph.tsx';
+import { useYearFormat } from '../i18n/use-year-format.ts';
 
 type PanelView = 'list' | 'graph';
 
@@ -42,6 +37,7 @@ function isCardType(value: string | null): value is CardType {
  */
 export function CultureSheet() {
   const { t } = useTranslation();
+  const { formatYear, formatPeriod } = useYearFormat();
   const { slug = '' } = useParams();
   const navigate = useNavigate();
   const [params, setParams] = useSearchParams();
@@ -252,6 +248,7 @@ function CardTabs({
   onTypeChange: (type: CardType) => void;
 }) {
   const { t } = useTranslation();
+  const { formatYear } = useYearFormat();
 
   if (culture.totalCards === 0) {
     return (
@@ -306,6 +303,7 @@ function CardList({
   year: number | null;
 }) {
   const { t } = useTranslation();
+  const { formatPeriod } = useYearFormat();
   const list = useCardList({ cultureId, type, year });
   const cards = list.data?.pages.flatMap((page) => page.items) ?? [];
 

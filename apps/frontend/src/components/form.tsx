@@ -3,9 +3,9 @@ import { useTranslation } from 'react-i18next';
 import type { ValidationKey } from '../i18n/index.ts';
 
 const controlClass =
-  'w-full rounded-md border border-stone-300 bg-white px-3 py-2 text-stone-900 ' +
-  'focus:outline-2 focus:outline-offset-1 focus:outline-amber-700 ' +
-  'aria-invalid:border-red-700';
+  'w-full rounded-md border border-input bg-background px-3 py-2 text-foreground ' +
+  'focus:outline-2 focus:outline-offset-1 focus:outline-amber-700 dark:focus:outline-amber-400 ' +
+  'aria-invalid:border-red-700 dark:aria-invalid:border-red-400';
 
 interface FieldProps {
   label: string;
@@ -28,17 +28,17 @@ export function Field({ label, error, hint, children }: FieldProps) {
 
   return (
     <div className="flex flex-col gap-1">
-      <label htmlFor={id} className="font-medium text-stone-800">
+      <label htmlFor={id} className="font-medium text-foreground">
         {label}
       </label>
       {children({ id, describedBy, invalid: Boolean(error) })}
       {hint && (
-        <p id={hintId} className="text-sm text-stone-600">
+        <p id={hintId} className="text-sm text-muted-foreground">
           {hint}
         </p>
       )}
       {message && (
-        <p id={errorId} className="text-sm text-red-700">
+        <p id={errorId} className="text-sm text-red-700 dark:text-red-400">
           {message}
         </p>
       )}
@@ -66,14 +66,14 @@ export function CheckboxField({ label, error, ...input }: CheckboxFieldProps) {
           type="checkbox"
           aria-invalid={Boolean(error)}
           aria-describedby={error ? errorId : undefined}
-          className="mt-1 size-4 shrink-0 accent-amber-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700"
+          className="mt-1 size-4 shrink-0 accent-amber-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700 dark:focus-visible:outline-amber-400"
         />
-        <label htmlFor={id} className="text-sm text-stone-800">
+        <label htmlFor={id} className="text-sm text-foreground">
           {label}
         </label>
       </div>
       {error && (
-        <p id={errorId} className="text-sm text-red-700">
+        <p id={errorId} className="text-sm text-red-700 dark:text-red-400">
           {t(`validation.${error as ValidationKey}`)}
         </p>
       )}
@@ -98,7 +98,7 @@ export function SubmitButton({ children, ...props }: ComponentProps<'button'>) {
     <button
       type="submit"
       {...props}
-      className="rounded-md bg-amber-800 px-4 py-2 font-medium text-white hover:bg-amber-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700 disabled:opacity-60"
+      className="rounded-md bg-amber-800 px-4 py-2 font-medium text-white hover:bg-amber-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700 dark:focus-visible:outline-amber-400 disabled:opacity-60"
     >
       {children}
     </button>
@@ -109,7 +109,11 @@ export function SubmitButton({ children, ...props }: ComponentProps<'button'>) {
 export function FormError({ children, testId }: { children?: ReactNode; testId?: string }) {
   if (!children) return null;
   return (
-    <p role="alert" data-testid={testId} className="rounded-md bg-red-50 px-3 py-2 text-red-800">
+    <p
+      role="alert"
+      data-testid={testId}
+      className="rounded-md bg-red-50 dark:bg-red-950/40 px-3 py-2 text-red-800 dark:text-red-200"
+    >
       {children}
     </p>
   );
@@ -122,7 +126,7 @@ export function FormSuccess({ children, testId }: { children?: ReactNode; testId
     <p
       role="status"
       data-testid={testId}
-      className="rounded-md bg-green-50 px-3 py-2 text-green-800"
+      className="rounded-md bg-green-50 dark:bg-green-950/40 px-3 py-2 text-green-800 dark:text-green-300"
     >
       {children}
     </p>

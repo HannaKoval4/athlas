@@ -23,7 +23,10 @@ export function Achievements() {
         <ul className="flex flex-col gap-2" data-testid="achievements">
           {achievements.data.map((achievement) => (
             <li key={achievement.code} className="flex items-start gap-2 text-sm">
-              <Award className="mt-0.5 size-4 shrink-0 text-amber-700" aria-hidden="true" />
+              <Award
+                className="mt-0.5 size-4 shrink-0 text-amber-700 dark:text-amber-400"
+                aria-hidden="true"
+              />
               <span>
                 <span className="font-medium">{t('achievements.eraStudied')}</span>
                 {achievement.quiz && (

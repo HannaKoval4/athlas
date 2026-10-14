@@ -48,7 +48,7 @@ export function AttemptPage() {
         </header>
 
         <section
-          className={`flex flex-col gap-2 rounded-lg border p-4 ${data.passed ? 'border-green-600 bg-green-50 text-green-950' : 'border-amber-500 bg-amber-50 text-amber-950'}`}
+          className={`flex flex-col gap-2 rounded-lg border p-4 ${data.passed ? 'border-green-600 dark:border-green-500 bg-green-50 dark:bg-green-950/40 text-green-950 dark:text-green-100' : 'border-amber-500 dark:border-amber-600 bg-amber-50 dark:bg-amber-950/40 text-amber-950 dark:text-amber-100'}`}
           data-testid="attempt-score"
         >
           <p className="text-xl font-semibold">
@@ -67,7 +67,7 @@ export function AttemptPage() {
         {data.newAchievement && (
           <p
             role="status"
-            className="flex items-center gap-2 rounded-lg border border-amber-400 bg-amber-100 p-4 font-medium text-amber-950"
+            className="flex items-center gap-2 rounded-lg border border-amber-400 dark:border-amber-600 bg-amber-100 dark:bg-amber-900/40 p-4 font-medium text-amber-950 dark:text-amber-100"
             data-testid="new-achievement"
           >
             <Award className="size-6 shrink-0" aria-hidden="true" />
@@ -118,14 +118,20 @@ function ReviewItem({ question, index }: { question: QuestionReview; index: numb
 
   return (
     <li
-      className={`flex flex-col gap-2 rounded-lg border bg-card p-4 ${question.isCorrect ? '' : 'border-amber-500'}`}
+      className={`flex flex-col gap-2 rounded-lg border bg-card p-4 ${question.isCorrect ? '' : 'border-amber-500 dark:border-amber-600'}`}
       data-testid={question.isCorrect ? 'review-right' : 'review-wrong'}
     >
       <div className="flex items-start gap-2">
         {question.isCorrect ? (
-          <Check className="mt-0.5 size-5 shrink-0 text-green-700" aria-label={t('quiz.right')} />
+          <Check
+            className="mt-0.5 size-5 shrink-0 text-green-700 dark:text-green-400"
+            aria-label={t('quiz.right')}
+          />
         ) : (
-          <X className="mt-0.5 size-5 shrink-0 text-amber-700" aria-label={t('quiz.wrong')} />
+          <X
+            className="mt-0.5 size-5 shrink-0 text-amber-700 dark:text-amber-400"
+            aria-label={t('quiz.wrong')}
+          />
         )}
         <p className="font-medium">
           {index + 1}. {question.text}
@@ -136,7 +142,11 @@ function ReviewItem({ question, index }: { question: QuestionReview; index: numb
           <ul className="flex flex-col gap-1 pl-7 text-sm">
             {question.options.map((option) => (
               <li key={option.id} className="flex flex-wrap items-center gap-2">
-                <span className={option.isCorrect ? 'font-medium text-green-800' : ''}>
+                <span
+                  className={
+                    option.isCorrect ? 'font-medium text-green-800 dark:text-green-300' : ''
+                  }
+                >
                   {option.text}
                 </span>
                 {option.isCorrect && <Badge variant="secondary">{t('quiz.correctOption')}</Badge>}

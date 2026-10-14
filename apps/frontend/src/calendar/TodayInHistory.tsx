@@ -1,5 +1,4 @@
 import {
-  formatPeriod,
   isSameCalendarDate,
   type TodayCard,
   type TodayHoliday,
@@ -9,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import { Badge } from '../components/ui/badge.tsx';
 import { formatCalendarDate } from './format.ts';
+import { useYearFormat } from '../i18n/use-year-format.ts';
 
 const COMPACT_COUNT = 3;
 
@@ -104,6 +104,7 @@ function entryClass(compact: boolean) {
 
 function CardEntry({ card, compact }: { card: TodayCard; compact: boolean }) {
   const { t } = useTranslation();
+  const { formatPeriod } = useYearFormat();
   return (
     <li className={entryClass(compact)} data-testid={`today-card-${card.slug}`}>
       <div className="flex flex-wrap items-center gap-2">

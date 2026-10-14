@@ -111,19 +111,17 @@ test.describe('Authentication', () => {
 });
 
 test.describe('Profile', () => {
-  test('changing the name and theme is saved and survives a reload', async ({ page }) => {
+  test('changing the name is saved and survives a reload', async ({ page }) => {
     await registerViaUi(page, 'Before', uniqueEmail());
     await page.getByRole('link', { name: 'Профиль' }).click();
 
     await page.getByTestId('profile-name').fill('After');
-    await page.getByTestId('profile-theme').selectOption('DARK');
     await page.getByTestId('profile-save').click();
 
     await expect(page.getByTestId('profile-saved')).toBeVisible();
     await expect(page.getByTestId('current-user-name')).toHaveText('After');
     await page.reload();
     await expect(page.getByTestId('profile-name')).toHaveValue('After');
-    await expect(page.getByTestId('profile-theme')).toHaveValue('DARK');
   });
 
   test('changing the password: the new one works, the old one does not', async ({ page }) => {

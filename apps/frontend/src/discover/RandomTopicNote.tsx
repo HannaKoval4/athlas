@@ -15,7 +15,7 @@ export function RandomTopicNote({ cultureSlug }: { cultureSlug: string }) {
 
   return (
     <p
-      className="flex gap-2 rounded-md border border-amber-300 bg-amber-50 p-3 text-sm text-amber-950"
+      className="flex gap-2 rounded-md border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/40 p-3 text-sm text-amber-950 dark:text-amber-100"
       data-testid="random-topic-reason"
     >
       <Shuffle className="mt-0.5 size-4 shrink-0" aria-hidden="true" />

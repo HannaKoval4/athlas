@@ -1,4 +1,4 @@
-import { type CardDetails, type CardSourceRef, formatPeriod } from '@atlas/shared';
+import { type CardDetails, type CardSourceRef } from '@atlas/shared';
 import { ArrowLeft, ExternalLink, MapPin } from 'lucide-react';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -13,6 +13,7 @@ import { Badge } from '../components/ui/badge.tsx';
 import { Button } from '../components/ui/button.tsx';
 import { useRecordView } from '../discover/api.ts';
 import { NotesPanel } from '../notes/NotesPanel.tsx';
+import { useYearFormat } from '../i18n/use-year-format.ts';
 
 /**
  * /cards/:slug – the card with its period, sources and links in both directions (F-05, F-06)
@@ -93,6 +94,7 @@ function BackButton() {
 
 function CardBody({ card }: { card: CardDetails }) {
   const { t } = useTranslation();
+  const { formatPeriod } = useYearFormat();
   // "Show on the map": the culture panel at the card's first year; the map picks the era.
   const mapLink = `/cultures/${card.culture.slug}?year=${card.startYear}`;
 

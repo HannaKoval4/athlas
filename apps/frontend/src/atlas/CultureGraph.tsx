@@ -61,7 +61,7 @@ export function CultureGraph({ slug, year }: { slug: string; year: number | null
       </p>
       <svg
         viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
-        className="w-full rounded-lg border bg-white"
+        className="w-full rounded-lg border bg-background"
         role="group"
         aria-label={t('culture.graphLabel', { nodes: nodes.length, edges: edges.length })}
       >
@@ -78,7 +78,12 @@ export function CultureGraph({ slug, year }: { slug: string; year: number | null
                 y1={from.y}
                 x2={to.x}
                 y2={to.y}
-                stroke={highlighted ? '#92400e' : '#a8a29e'}
+                // Theme-aware colors come from classes: SVG attributes cannot follow the theme.
+                className={
+                  highlighted
+                    ? 'stroke-amber-800 dark:stroke-amber-400'
+                    : 'stroke-stone-400 dark:stroke-stone-500'
+                }
                 strokeWidth={highlighted ? 3 : 1.5}
                 opacity={activeId === null || highlighted ? 1 : 0.15}
                 data-testid="graph-edge"
@@ -120,7 +125,7 @@ export function CultureGraph({ slug, year }: { slug: string; year: number | null
                 cy={point.y}
                 r={active ? NODE_RADIUS + 3 : NODE_RADIUS}
                 fill={CARD_TYPE_COLORS[node.type]}
-                stroke={active ? '#1c1917' : '#ffffff'}
+                className={active ? 'stroke-foreground' : 'stroke-background'}
                 strokeWidth={active ? 3 : 2}
               />
               <text
@@ -129,7 +134,7 @@ export function CultureGraph({ slug, year }: { slug: string; year: number | null
                 textAnchor={anchor}
                 fontSize={12}
                 fontWeight={active ? 700 : 400}
-                fill="#1c1917"
+                className="fill-foreground"
               >
                 {shorten(node.title)}
               </text>

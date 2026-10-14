@@ -1,8 +1,10 @@
 import { Locale, ThemePreference, type UserProfile } from '@atlas/shared';
+import { useId } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { isApiError } from '../api/client.ts';
+import { usePreferences } from '../app/preferences-context.ts';
 import { useChangePassword, useCurrentUser, useUpdateProfile } from '../auth/api.ts';
 import {
   type PasswordForm,
@@ -34,12 +36,13 @@ export function ProfilePage() {
       <div className="flex max-w-xl flex-col gap-10">
         <h1 className="text-2xl font-bold">{t('profile.title')}</h1>
         <ProfileDetails user={user} />
+        <Appearance />
         <PasswordChange />
         <section aria-labelledby="notes-export" className="flex flex-col gap-2">
           <h2 id="notes-export" className="text-xl font-semibold">
             {t('notes.exportTitle')}
           </h2>
-          <p className="text-sm text-stone-600">{t('notes.exportHint')}</p>
+          <p className="text-sm text-muted-foreground">{t('notes.exportHint')}</p>
           <ExportNotes />
         </section>
         <Achievements />
@@ -58,7 +61,7 @@ function ProfileDetails({ user }: { user: UserProfile }) {
     formState: { errors },
   } = useForm<ProfileForm>({
     resolver: zodResolver(profileSchema),
-    defaultValues: { name: user.name, email: user.email, theme: user.theme, locale: user.locale },
+    defaultValues: { name: user.name, email: user.email },
   });
   const emailTaken = isApiError(update.error, 409);
 
@@ -67,7 +70,7 @@ function ProfileDetails({ user }: { user: UserProfile }) {
       <h2 id="profile-details" className="text-xl font-semibold">
         {t('profile.detailsTitle')}
       </h2>
-      <p className="text-sm text-stone-600" data-testid="profile-consent">
+      <p className="text-sm text-muted-foreground" data-testid="profile-consent">
         {user.consentAt
           ? t('profile.consentGiven', {
               date: new Date(user.consentAt).toLocaleDateString(i18n.language),
@@ -105,28 +108,6 @@ function ProfileDetails({ user }: { user: UserProfile }) {
             />
           )}
         </Field>
-        <Field label={t('profile.theme')}>
-          {({ id }) => (
-            <Select id={id} data-testid="profile-theme" {...register('theme')}>
-              {Object.values(ThemePreference).map((theme) => (
-                <option key={theme} value={theme}>
-                  {t(`profile.themes.${theme}`)}
-                </option>
-              ))}
-            </Select>
-          )}
-        </Field>
-        <Field label={t('profile.locale')}>
-          {({ id }) => (
-            <Select id={id} data-testid="profile-locale" {...register('locale')}>
-              {Object.values(Locale).map((locale) => (
-                <option key={locale} value={locale}>
-                  {t(`profile.locales.${locale}`)}
-                </option>
-              ))}
-            </Select>
-          )}
-        </Field>
         {update.isError && !emailTaken && <FormError>{t('auth.errors.generic')}</FormError>}
         {update.isSuccess && <FormSuccess testId="profile-saved">{t('profile.saved')}</FormSuccess>}
         <div>
@@ -135,6 +116,59 @@ function ProfileDetails({ user }: { user: UserProfile }) {
           </SubmitButton>
         </div>
       </form>
+    </section>
+  );
+}
+
+/**
+ * Theme and language apply as soon as they are picked and are saved to the profile at once:
+ * there is nothing to confirm, and the header switches change the same values.
+ */
+function Appearance() {
+  const { t } = useTranslation();
+  const { theme, locale, setTheme, setLocale } = usePreferences();
+  const headingId = useId();
+
+  return (
+    <section aria-labelledby={headingId} className="flex flex-col gap-4">
+      <div className="flex flex-col gap-1">
+        <h2 id={headingId} className="text-xl font-semibold">
+          {t('preferences.title')}
+        </h2>
+        <p className="text-sm text-muted-foreground">{t('preferences.hint')}</p>
+      </div>
+      <Field label={t('profile.theme')}>
+        {({ id }) => (
+          <Select
+            id={id}
+            data-testid="profile-theme"
+            value={theme}
+            onChange={(event) => setTheme(event.target.value as ThemePreference)}
+          >
+            {Object.values(ThemePreference).map((value) => (
+              <option key={value} value={value}>
+                {t(`profile.themes.${value}`)}
+              </option>
+            ))}
+          </Select>
+        )}
+      </Field>
+      <Field label={t('profile.locale')}>
+        {({ id }) => (
+          <Select
+            id={id}
+            data-testid="profile-locale"
+            value={locale}
+            onChange={(event) => setLocale(event.target.value as Locale)}
+          >
+            {Object.values(Locale).map((value) => (
+              <option key={value} value={value} lang={value === Locale.EN ? 'en' : 'ru'}>
+                {t(`profile.locales.${value}`)}
+              </option>
+            ))}
+          </Select>
+        )}
+      </Field>
     </section>
   );
 }

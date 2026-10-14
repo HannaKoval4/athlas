@@ -31,7 +31,7 @@ export function RecentNotes({ notes }: { notes: Note[] }) {
         </Link>
       </div>
       {notes.length === 0 ? (
-        <p className="text-sm text-stone-600">{t('notes.emptyHint')}</p>
+        <p className="text-sm text-muted-foreground">{t('notes.emptyHint')}</p>
       ) : (
         <ul className="flex flex-col gap-2">
           {notes.slice(0, RECENT_COUNT).map((note) => {
@@ -40,7 +40,7 @@ export function RecentNotes({ notes }: { notes: Note[] }) {
               <li key={note.id} className="flex flex-col text-sm">
                 <span className="font-medium">{note.title ?? t('notes.untitled')}</span>
                 {/* Preview: inline emphasis kept, blocks (lists, paragraphs) flattened into one line. */}
-                <span className="line-clamp-2 text-stone-600">
+                <span className="line-clamp-2 text-muted-foreground">
                   <Markdown allowedElements={['strong', 'em', 'code']} unwrapDisallowed>
                     {note.content}
                   </Markdown>

@@ -13,7 +13,7 @@ export function LoadingScreen({
     <div
       role="status"
       aria-live="polite"
-      className={`grid place-items-center text-stone-600 ${fill === 'screen' ? 'min-h-screen' : 'h-full'}`}
+      className={`grid place-items-center text-muted-foreground ${fill === 'screen' ? 'min-h-screen' : 'h-full'}`}
     >
       {label ?? t('app.loading')}
     </div>

@@ -166,6 +166,13 @@ export const ru = {
       currentPasswordWrong: 'Текущий пароль указан неверно.',
     },
   },
+  preferences: {
+    title: 'Оформление и язык',
+    hint: 'Применяется сразу и сохраняется в профиле.',
+    themeNow: 'Тема: {{theme}}',
+    switchTheme: 'Тема: {{theme}}. Переключить на «{{next}}»',
+    switchTo: { RU: 'Переключить на русский', EN: 'Switch to English' },
+  },
   notes: {
     title: 'Блокнот',
     intro: 'Все ваши заметки, сгруппированные по культурам и карточкам. Заметки видите только вы.',

@@ -1,6 +1,7 @@
-import { type MapRegion, formatYear } from '@atlas/shared';
+import { type MapRegion } from '@atlas/shared';
 import { useTranslation } from 'react-i18next';
 import { Link, useSearchParams } from 'react-router';
+import { useYearFormat } from '../i18n/use-year-format.ts';
 
 interface RegionPanelProps {
   year: number;
@@ -15,6 +16,7 @@ interface RegionPanelProps {
  */
 export function RegionPanel({ year, regions, selected, onSelect }: RegionPanelProps) {
   const { t } = useTranslation();
+  const { formatYear } = useYearFormat();
   // The culture drawer keeps the map's ?era=&year= so closing it returns to the same view.
   const [params] = useSearchParams();
 
@@ -24,7 +26,7 @@ export function RegionPanel({ year, regions, selected, onSelect }: RegionPanelPr
         <h2 id="region-panel-title" className="text-lg font-semibold">
           {t('map.regionsTitle')}
         </h2>
-        <p className="text-sm text-stone-600" data-testid="regions-count">
+        <p className="text-sm text-muted-foreground" data-testid="regions-count">
           {t('map.regionsCount', { count: regions.length })}
         </p>
       </div>
@@ -38,7 +40,7 @@ export function RegionPanel({ year, regions, selected, onSelect }: RegionPanelPr
                 aria-pressed={region.id === selected?.id}
                 data-testid={`region-${region.slug}`}
                 onClick={() => onSelect(region.id === selected?.id ? null : region)}
-                className="flex w-full items-center gap-2 rounded px-2 py-1 text-left hover:bg-stone-100 focus-visible:outline-2 focus-visible:outline-amber-700 aria-pressed:bg-amber-100 aria-pressed:font-semibold"
+                className="flex w-full items-center gap-2 rounded px-2 py-1 text-left hover:bg-muted focus-visible:outline-2 focus-visible:outline-amber-700 dark:focus-visible:outline-amber-400 aria-pressed:bg-amber-100 dark:aria-pressed:bg-amber-900/40 aria-pressed:font-semibold"
               >
                 <span
                   aria-hidden="true"
@@ -61,12 +63,12 @@ export function RegionPanel({ year, regions, selected, onSelect }: RegionPanelPr
             <button
               type="button"
               onClick={() => onSelect(null)}
-              className="text-sm text-amber-900 underline focus-visible:outline-2 focus-visible:outline-amber-700"
+              className="text-sm text-amber-900 dark:text-amber-200 underline focus-visible:outline-2 focus-visible:outline-amber-700 dark:focus-visible:outline-amber-400"
             >
               {t('map.closeRegion')}
             </button>
           </div>
-          <p className="mb-2 text-sm text-stone-600">
+          <p className="mb-2 text-sm text-muted-foreground">
             {t('map.culturesIn', { year: formatYear(year) })}
           </p>
           <ul className="flex flex-col gap-2">
@@ -83,19 +85,21 @@ export function RegionPanel({ year, regions, selected, onSelect }: RegionPanelPr
                 />
                 <Link
                   to={{ pathname: `/cultures/${culture.slug}`, search: params.toString() }}
-                  className="font-medium text-amber-900 underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-amber-700"
+                  className="font-medium text-amber-900 dark:text-amber-200 underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-amber-700 dark:focus-visible:outline-amber-400"
                 >
                   {culture.name}
                 </Link>
                 {culture.dateApproximate && (
-                  <span className="text-xs text-stone-600">({t('map.approximate')})</span>
+                  <span className="text-xs text-muted-foreground">({t('map.approximate')})</span>
                 )}
               </li>
             ))}
           </ul>
         </section>
       ) : (
-        regions.length > 0 && <p className="text-sm text-stone-600">{t('map.selectRegionHint')}</p>
+        regions.length > 0 && (
+          <p className="text-sm text-muted-foreground">{t('map.selectRegionHint')}</p>
+        )
       )}
     </aside>
   );

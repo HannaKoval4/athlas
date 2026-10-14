@@ -1,11 +1,9 @@
 import {
   EMAIL_MAX_LENGTH,
-  Locale,
   NAME_MAX_LENGTH,
   PASSWORD_MAX_LENGTH,
   PASSWORD_MIN_LENGTH,
   PASSWORD_PATTERN,
-  ThemePreference,
 } from '@atlas/shared';
 import { z } from 'zod';
 import type { ValidationKey } from '../i18n/index.ts';
@@ -42,8 +40,6 @@ export const registerSchema = z.object({
 export const profileSchema = z.object({
   name,
   email,
-  theme: z.enum(Object.values(ThemePreference)),
-  locale: z.enum(Object.values(Locale)),
 });
 export const passwordSchema = z.object({
   currentPassword: existingPassword,

@@ -17,6 +17,7 @@ import { AttemptPage } from '../pages/AttemptPage.tsx';
 import { ProfilePage } from '../pages/ProfilePage.tsx';
 import { QuizPage } from '../pages/QuizPage.tsx';
 import { SearchPage } from '../pages/SearchPage.tsx';
+import { PreferencesProvider } from './PreferencesProvider.tsx';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -37,31 +38,33 @@ export function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <Routes>
-          <Route element={<GuestOnly />}>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-          </Route>
-          <Route element={<RequireAuth />}>
-            <Route element={<AppLayout />}>
-              {/* The culture panel is a drawer over the map, so it is a child route of the map. */}
-              <Route path="/" element={<MapPage />}>
-                <Route path="cultures/:slug" element={<CultureSheet />} />
-              </Route>
-              <Route path="/cards/:slug" element={<CardPage />} />
-              <Route path="/calendar" element={<CalendarPage />} />
-              <Route path="/search" element={<SearchPage />} />
-              <Route path="/new" element={<NewPage />} />
-              <Route path="/notes" element={<NotesPage />} />
-              <Route path="/quizzes/:id" element={<QuizPage />} />
-              <Route path="/quizzes/attempts/:id" element={<AttemptPage />} />
-              <Route path="/profile" element={<ProfilePage />} />
+      <PreferencesProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route element={<GuestOnly />}>
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
             </Route>
-          </Route>
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </BrowserRouter>
+            <Route element={<RequireAuth />}>
+              <Route element={<AppLayout />}>
+                {/* The culture panel is a drawer over the map, so it is a child route of the map. */}
+                <Route path="/" element={<MapPage />}>
+                  <Route path="cultures/:slug" element={<CultureSheet />} />
+                </Route>
+                <Route path="/cards/:slug" element={<CardPage />} />
+                <Route path="/calendar" element={<CalendarPage />} />
+                <Route path="/search" element={<SearchPage />} />
+                <Route path="/new" element={<NewPage />} />
+                <Route path="/notes" element={<NotesPage />} />
+                <Route path="/quizzes/:id" element={<QuizPage />} />
+                <Route path="/quizzes/attempts/:id" element={<AttemptPage />} />
+                <Route path="/profile" element={<ProfilePage />} />
+              </Route>
+            </Route>
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </BrowserRouter>
+      </PreferencesProvider>
     </QueryClientProvider>
   );
 }

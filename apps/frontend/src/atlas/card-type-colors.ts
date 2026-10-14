@@ -1,6 +1,6 @@
 import type { CardType } from '@atlas/shared';
 
-/** One colour per card type for the link graph and its legend (distinct, readable on white). */
+/** One colour per card type for the link graph and its legend (distinct, readable on light and dark backgrounds). */
 export const CARD_TYPE_COLORS: Record<CardType, string> = {
   MYTHOLOGY: '#7c3aed',
   EVENT: '#dc2626',
@@ -8,5 +8,5 @@ export const CARD_TYPE_COLORS: Record<CardType, string> = {
   FACT: '#0891b2',
   ARTWORK: '#db2777',
   PERSON: '#16a34a',
-  ARTIFACT: '#57534e',
+  ARTIFACT: '#78716c',
 };

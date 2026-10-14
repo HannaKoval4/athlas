@@ -6,7 +6,6 @@ import {
   type HolidaySearchHit,
   type SearchQuery,
   SEARCH_QUERY_MAX_LENGTH,
-  formatPeriod,
   splitHighlights,
 } from '@atlas/shared';
 import { MapPin } from 'lucide-react';
@@ -20,6 +19,7 @@ import { Field, Select, TextInput } from '../components/form.tsx';
 import { Badge } from '../components/ui/badge.tsx';
 import { Button } from '../components/ui/button.tsx';
 import { useCultures, useRegions, useSearch } from '../search/api.ts';
+import { useYearFormat } from '../i18n/use-year-format.ts';
 
 const PAGE_SIZE = 20;
 const TYPING_DELAY_MS = 300;
@@ -43,6 +43,7 @@ function parseYear(value: string | null): number | undefined {
  */
 export function SearchPage() {
   const { t } = useTranslation();
+  const { formatPeriod } = useYearFormat();
   const [params, setParams] = useSearchParams();
   const eras = useEras();
   const cultures = useCultures();
@@ -395,7 +396,10 @@ function Snippet({ text }: { text: string | null }) {
     <p className="text-sm text-muted-foreground">
       {splitHighlights(text.replace(/[*_#>`]+/g, '')).map((part, index) =>
         part.highlighted ? (
-          <mark key={index} className="rounded-sm bg-amber-200 px-0.5 text-foreground">
+          <mark
+            key={index}
+            className="rounded-sm bg-amber-200 dark:bg-amber-800/60 px-0.5 text-foreground"
+          >
             {part.text}
           </mark>
         ) : (
@@ -408,6 +412,7 @@ function Snippet({ text }: { text: string | null }) {
 
 function CardResult({ card }: { card: CardSearchHit }) {
   const { t } = useTranslation();
+  const { formatPeriod } = useYearFormat();
   return (
     <li
       className="flex gap-3 rounded-lg border bg-card p-3"
@@ -461,6 +466,7 @@ function CardResult({ card }: { card: CardSearchHit }) {
 
 function CultureResult({ culture }: { culture: CultureSearchHit }) {
   const { t } = useTranslation();
+  const { formatPeriod } = useYearFormat();
   return (
     <li
       className="flex flex-col gap-1 rounded-lg border bg-card p-3"

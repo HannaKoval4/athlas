@@ -3,7 +3,8 @@ import { expect, userTest as test } from './fixtures.ts';
 
 // Runs against the seeded dev database. The worker's user is shared with other specs, so every
 // test uses its own unique text and looks only for it.
-const unique = (label: string) => `${label} ${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
+const unique = (label: string) =>
+  `${label} ${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
 
 test.describe('Notes', () => {
   test('card note: add, keep after reload, edit, delete', async ({ page }) => {

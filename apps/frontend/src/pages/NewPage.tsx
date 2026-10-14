@@ -1,10 +1,11 @@
-import { FEED_DEFAULT_LIMIT, type FeedCard, formatPeriod } from '@atlas/shared';
+import { FEED_DEFAULT_LIMIT, type FeedCard } from '@atlas/shared';
 import { MapPin } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import { PageContainer } from '../components/AppLayout.tsx';
 import { Badge } from '../components/ui/badge.tsx';
 import { useFeed } from '../discover/api.ts';
+import { useYearFormat } from '../i18n/use-year-format.ts';
 
 /** /new: the latest published materials of the atlas (F-13), not world news. */
 export function NewPage() {
@@ -38,6 +39,7 @@ export function NewPage() {
 
 function FeedItem({ card }: { card: FeedCard }) {
   const { t, i18n } = useTranslation();
+  const { formatPeriod } = useYearFormat();
   return (
     <li className="flex gap-3 rounded-lg border bg-card p-3" data-testid={`feed-card-${card.slug}`}>
       {card.imageUrl && (

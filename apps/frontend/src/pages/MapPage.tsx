@@ -34,7 +34,7 @@ export function MapPage() {
         <button
           type="button"
           onClick={() => void (eras.isError ? eras.refetch() : slice.refetch())}
-          className="rounded border border-stone-300 px-3 py-1 hover:bg-stone-100"
+          className="rounded border border-input px-3 py-1 hover:bg-muted"
         >
           {t('map.retry')}
         </button>
@@ -74,7 +74,7 @@ export function MapPage() {
           >
             {slice.isPlaceholderData ? (
               <span
-                className="rounded bg-white/90 px-3 py-1 text-sm shadow"
+                className="rounded bg-background/90 px-3 py-1 text-sm shadow"
                 data-testid="map-updating"
               >
                 {t('map.updating')}
@@ -82,7 +82,7 @@ export function MapPage() {
             ) : (
               regions.length === 0 && (
                 <span
-                  className="rounded bg-white/90 px-3 py-1 text-sm shadow"
+                  className="rounded bg-background/90 px-3 py-1 text-sm shadow"
                   data-testid="map-empty"
                 >
                   {t('map.empty')}
@@ -91,14 +91,14 @@ export function MapPage() {
             )}
           </div>
         </div>
-        <div className="flex flex-col overflow-y-auto border-t border-stone-200 bg-white md:w-80 md:border-t-0 md:border-l">
+        <div className="flex flex-col overflow-y-auto border-t border-border bg-background md:w-80 md:border-t-0 md:border-l">
           <RegionPanel
             year={slice.data.year}
             regions={regions}
             selected={selected}
             onSelect={(region) => setSelectedId(region?.id ?? null)}
           />
-          <div className="border-t border-stone-200 p-4">
+          <div className="border-t border-border p-4">
             {notes.isError ? (
               <p role="alert" className="text-sm">
                 {t('notes.loadError')}
@@ -107,7 +107,7 @@ export function MapPage() {
               <RecentNotes notes={notes.data ?? []} />
             )}
           </div>
-          <div className="border-t border-stone-200 p-4">
+          <div className="border-t border-border p-4">
             {today.isError ? (
               <p role="alert" className="text-sm">
                 {t('today.loadError')}

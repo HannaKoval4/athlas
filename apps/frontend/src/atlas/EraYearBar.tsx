@@ -1,13 +1,8 @@
-import {
-  type EraSummary,
-  formatYear,
-  isYearInPeriod,
-  ordinalToYear,
-  yearToOrdinal,
-} from '@atlas/shared';
+import { type EraSummary, isYearInPeriod, ordinalToYear, yearToOrdinal } from '@atlas/shared';
 import { type FormEvent, useEffect, useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Selection } from './selection.ts';
+import { useYearFormat } from '../i18n/use-year-format.ts';
 
 /** Slider moves are applied after a short pause, so dragging does not fire a request per step. */
 const COMMIT_DELAY_MS = 300;
@@ -22,6 +17,7 @@ interface EraYearBarProps {
 /** The "tab" at the top of the map: era buttons, a year slider and an exact year input (F-04). */
 export function EraYearBar({ eras, selection, onEraChange, onYearChange }: EraYearBarProps) {
   const { t } = useTranslation();
+  const { formatYear } = useYearFormat();
   const [expanded, setExpanded] = useState(true);
   const panelId = useId();
   const { era, year } = selection;
@@ -45,7 +41,7 @@ export function EraYearBar({ eras, selection, onEraChange, onYearChange }: EraYe
     <section
       aria-label={t('era.barLabel')}
       data-testid="era-bar"
-      className="border-b border-stone-200 bg-amber-50/95"
+      className="border-b border-border bg-amber-50/95 dark:bg-stone-900/95"
     >
       <button
         type="button"
@@ -53,7 +49,7 @@ export function EraYearBar({ eras, selection, onEraChange, onYearChange }: EraYe
         aria-controls={panelId}
         title={t('era.toggle')}
         onClick={() => setExpanded((value) => !value)}
-        className="flex w-full items-center justify-center gap-2 px-4 py-1.5 text-sm font-medium text-amber-950 hover:bg-amber-100 focus-visible:outline-2 focus-visible:outline-amber-700"
+        className="flex w-full items-center justify-center gap-2 px-4 py-1.5 text-sm font-medium text-amber-950 dark:text-amber-100 hover:bg-amber-100 dark:hover:bg-amber-900/40 focus-visible:outline-2 focus-visible:outline-amber-700 dark:focus-visible:outline-amber-400"
       >
         <span aria-hidden="true">{expanded ? '▲' : '▼'}</span>
         <span data-testid="selection-summary">
@@ -71,7 +67,7 @@ export function EraYearBar({ eras, selection, onEraChange, onYearChange }: EraYe
                 aria-pressed={item.id === era.id}
                 data-testid={`era-${item.slug}`}
                 onClick={() => onEraChange(item)}
-                className="rounded-full border border-amber-800/40 px-3 py-1 text-sm hover:bg-amber-100 focus-visible:outline-2 focus-visible:outline-amber-700 aria-pressed:bg-amber-800 aria-pressed:text-white"
+                className="rounded-full border border-amber-800/40 dark:border-amber-400/40 px-3 py-1 text-sm hover:bg-amber-100 dark:hover:bg-amber-900/40 focus-visible:outline-2 focus-visible:outline-amber-700 dark:focus-visible:outline-amber-400 aria-pressed:bg-amber-800 aria-pressed:text-white"
               >
                 {item.name}
               </button>
@@ -80,7 +76,7 @@ export function EraYearBar({ eras, selection, onEraChange, onYearChange }: EraYe
 
           <YearSlider era={era} year={draft} onChange={setDraft} />
           <YearInput era={era} year={draft} onSubmit={setDraft} />
-          <p className="text-xs text-stone-600">{t('era.boundsNote')}</p>
+          <p className="text-xs text-muted-foreground">{t('era.boundsNote')}</p>
         </div>
       </div>
     </section>
@@ -98,12 +94,13 @@ function YearSlider({
   onChange: (year: number) => void;
 }) {
   const { t } = useTranslation();
+  const { formatYear } = useYearFormat();
   const start = formatYear(era.startYear);
   const end = formatYear(era.endYear);
 
   return (
     <div className="flex items-center gap-3 text-sm">
-      <span className="hidden w-32 text-right text-stone-600 sm:block">{start}</span>
+      <span className="hidden w-32 text-right text-muted-foreground sm:block">{start}</span>
       <input
         type="range"
         data-testid="year-slider"
@@ -116,7 +113,7 @@ function YearSlider({
         onChange={(event) => onChange(ordinalToYear(Number(event.target.value)))}
         className="h-2 flex-1 cursor-pointer accent-amber-800"
       />
-      <span className="hidden w-32 text-stone-600 sm:block">{end}</span>
+      <span className="hidden w-32 text-muted-foreground sm:block">{end}</span>
     </div>
   );
 }
@@ -131,6 +128,7 @@ function YearInput({
   onSubmit: (year: number) => void;
 }) {
   const { t } = useTranslation();
+  const { formatYear } = useYearFormat();
   const inputId = useId();
   const messageId = useId();
   const [text, setText] = useState(String(year));
@@ -174,12 +172,12 @@ function YearInput({
         onChange={(event) => setText(event.target.value)}
         aria-invalid={error !== null}
         aria-describedby={messageId}
-        className="w-28 rounded border border-stone-300 bg-white px-2 py-1 aria-invalid:border-red-700"
+        className="w-28 rounded border border-input bg-background px-2 py-1 aria-invalid:border-red-700 dark:aria-invalid:border-red-400"
       />
       <button
         type="submit"
         data-testid="year-submit"
-        className="rounded border border-stone-300 bg-white px-3 py-1 hover:bg-stone-100 focus-visible:outline-2 focus-visible:outline-amber-700"
+        className="rounded border border-input bg-background px-3 py-1 hover:bg-muted focus-visible:outline-2 focus-visible:outline-amber-700 dark:focus-visible:outline-amber-400"
       >
         {t('era.go')}
       </button>
@@ -189,7 +187,7 @@ function YearInput({
       <span
         id={messageId}
         role={error ? 'alert' : undefined}
-        className={error ? 'text-red-700' : 'text-stone-600'}
+        className={error ? 'text-red-700 dark:text-red-400' : 'text-muted-foreground'}
       >
         {error ?? t('era.yearInputHint')}
       </span>

@@ -63,7 +63,7 @@ export function AtlasMap({ regions, selectedId, onSelect }: AtlasMapProps) {
           </GeoJSON>
         ))}
       </MapContainer>
-      <p className="pointer-events-none absolute bottom-6 left-2 z-[1000] rounded bg-white/85 px-2 py-0.5 text-xs text-stone-700">
+      <p className="pointer-events-none absolute bottom-6 left-2 z-[1000] rounded bg-background/85 px-2 py-0.5 text-xs text-muted-foreground">
         {t('map.bordersNote')}
       </p>
     </div>
