@@ -1,3 +1,4 @@
+import { Role } from '@atlas/shared';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, NavLink, Outlet } from 'react-router';
@@ -45,6 +46,11 @@ export function AppLayout() {
             <NavLink to="/profile" className={navLinkClass}>
               {t('nav.profile')}
             </NavLink>
+            {user?.role === Role.ADMIN && (
+              <NavLink to="/admin" className={navLinkClass} data-testid="nav-admin">
+                {t('nav.admin')}
+              </NavLink>
+            )}
           </nav>
           <RandomTopicButton />
           <div className="ml-auto flex items-center gap-3">

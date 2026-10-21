@@ -44,7 +44,9 @@ test.describe('Theme and language (F-17)', () => {
 
     await page.getByTestId('locale-switch').click();
 
-    await expect(page.getByRole('link', { name: 'Calendar' })).toBeVisible();
+    // Scoped to the header: "Today in history" may have its own Calendar link.
+    const nav = page.getByRole('navigation', { name: 'Main navigation' });
+    await expect(nav.getByRole('link', { name: 'Calendar' })).toBeVisible();
     await expect(page.getByTestId('selection-summary')).toContainText('450 BCE');
 
     await page.getByTestId('theme-switch').click(); // SYSTEM -> LIGHT

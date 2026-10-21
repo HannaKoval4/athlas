@@ -1,6 +1,17 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useEffect } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router';
+import { AdminLayout, RequireAdmin } from '../admin/AdminLayout.tsx';
+import { CardEditPage } from '../admin/pages/CardEditPage.tsx';
+import { CardsPage } from '../admin/pages/CardsPage.tsx';
+import { CultureRegionsPage } from '../admin/pages/CultureRegionsPage.tsx';
+import { CulturesPage } from '../admin/pages/CulturesPage.tsx';
+import { ErasPage } from '../admin/pages/ErasPage.tsx';
+import { HolidaysPage } from '../admin/pages/HolidaysPage.tsx';
+import { QuestionsPage } from '../admin/pages/QuestionsPage.tsx';
+import { QuizzesPage } from '../admin/pages/QuizzesPage.tsx';
+import { RegionsPage } from '../admin/pages/RegionsPage.tsx';
+import { SourcesPage } from '../admin/pages/SourcesPage.tsx';
 import { isApiError, onSessionExpired } from '../api/client.ts';
 import { clearSession } from '../auth/api.ts';
 import { GuestOnly, RequireAuth } from '../auth/route-guards.tsx';
@@ -59,6 +70,23 @@ export function App() {
                 <Route path="/quizzes/:id" element={<QuizPage />} />
                 <Route path="/quizzes/attempts/:id" element={<AttemptPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
+                {/* F-18: content management, ADMIN only (404 for other roles). */}
+                <Route element={<RequireAdmin />}>
+                  <Route path="/admin" element={<AdminLayout />}>
+                    <Route index element={<Navigate to="cards" replace />} />
+                    <Route path="cards" element={<CardsPage />} />
+                    <Route path="cards/new" element={<CardEditPage />} />
+                    <Route path="cards/:id" element={<CardEditPage />} />
+                    <Route path="cultures" element={<CulturesPage />} />
+                    <Route path="regions" element={<RegionsPage />} />
+                    <Route path="culture-regions" element={<CultureRegionsPage />} />
+                    <Route path="eras" element={<ErasPage />} />
+                    <Route path="sources" element={<SourcesPage />} />
+                    <Route path="holidays" element={<HolidaysPage />} />
+                    <Route path="quizzes" element={<QuizzesPage />} />
+                    <Route path="quizzes/:id" element={<QuestionsPage />} />
+                  </Route>
+                </Route>
               </Route>
             </Route>
             <Route path="*" element={<NotFoundPage />} />

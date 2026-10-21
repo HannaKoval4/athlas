@@ -1,4 +1,4 @@
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { type Page, test as base, expect } from '@playwright/test';
@@ -61,3 +61,40 @@ export async function expectSelection(page: Page, era: string, year: RegExp | st
     })
     .toMatch(new RegExp(`^${era} ${typeof year === 'string' ? year : year.source}$`));
 }
+
+/** The seeded admin (SEED_ADMIN_* from the repo's .env, or the .env.example defaults). */
+function seedAdmin(): { email: string; password: string } {
+  const env: Record<string, string> = {};
+  const file = path.join(import.meta.dirname, '..', '..', '..', '.env');
+  if (existsSync(file)) {
+    for (const line of readFileSync(file, 'utf8').split(/\r?\n/)) {
+      const match = /^\s*([A-Z_]+)\s*=\s*(.*)\s*$/.exec(line);
+      if (match?.[1] && match[2] !== undefined) env[match[1]] = match[2];
+    }
+  }
+  return {
+    email: process.env.SEED_ADMIN_EMAIL ?? env.SEED_ADMIN_EMAIL ?? 'admin@atlas.local',
+    password: process.env.SEED_ADMIN_PASSWORD ?? env.SEED_ADMIN_PASSWORD ?? 'Admin12345',
+  };
+}
+
+/** Like userTest, but the worker's session belongs to the seeded admin. */
+export const adminTest = test.extend<object, { adminStorageState: string }>({
+  storageState: ({ adminStorageState }, use) => use(adminStorageState),
+  adminStorageState: [
+    async ({ browser }, use, workerInfo) => {
+      const dir = path.join(workerInfo.project.outputDir, '.auth');
+      const file = path.join(dir, `admin-${workerInfo.parallelIndex}.json`);
+      if (!existsSync(file)) {
+        await mkdir(dir, { recursive: true });
+        const context = await browser.newContext({ storageState: undefined });
+        const res = await context.request.post(`${API}/auth/login`, { data: seedAdmin() });
+        if (res.status() !== 200) throw new Error(`Admin login failed: ${res.status()}`);
+        await context.storageState({ path: file });
+        await context.close();
+      }
+      await use(file);
+    },
+    { scope: 'worker' },
+  ],
+});

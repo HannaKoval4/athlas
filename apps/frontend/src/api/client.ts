@@ -17,7 +17,7 @@ export function isApiError(error: unknown, status?: number): error is ApiError {
   return error instanceof ApiError && (status === undefined || error.status === status);
 }
 
-type HttpMethod = 'GET' | 'POST' | 'PATCH' | 'DELETE';
+type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
 interface RequestOptions {
   method?: HttpMethod;
